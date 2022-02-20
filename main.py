@@ -5,6 +5,8 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.lang.builder import Builder
 from helper import KV
 
+from Weather_data_collection import formattedktof, formattedktof_feelslike, formattedmbtoinhg, formattedkmhr, x, clouds
+
 class Tab(MDFloatLayout, MDTabsBase):
     pass
 class Weather_tab(MDFloatLayout, MDTabsBase):
@@ -48,6 +50,9 @@ class AWSApp(MDApp):
         T = "-.-"
         Tfl = "-.-"
         Ttype = "Celsius" #getTempType_FC(desired_type)
+
+        T = formattedktof
+        Tfl = formattedktof_feelslike
         s = "\nTemperature: " + T + "°" + "    Feels like:" + Tfl + "°" 
         return  s
     
@@ -63,12 +68,12 @@ class AWSApp(MDApp):
 
     # this function will show the data regarding the ambient 
     def Show_Air_data():
-        Pr = "-.-"
-        Ws = "-.-"
-        Cl = "-.-"
+        Pr = str(formattedmbtoinhg)
+        Ws = str(formattedkmhr)
+        Cl = str(clouds)
         C_info = "--"
 
-        s = "Pressure: " + Pr + " hPa" + "\n\n" + "Wind speed: " + Ws + " km/hr\n\n" + "Cloud:" + Cl + "%   " + C_info
+        s = "Pressure: " + Pr + " hPa" + "\n\n" + "Wind speed: " + Ws + " km/hr from: " + x + "\n\n" + "Cloud:" + Cl + "%   " + C_info
 
         return s
 
@@ -81,8 +86,8 @@ class AWSApp(MDApp):
     Tdata = Show_Temp_Data()
     Pdata = Show_Water_data()
     Adata = Show_Air_data()
-    T = "-.-"
-    CTemp = "\n" + T + "°" + "  C" + "\n"
+    T = formattedktof
+    CTemp = "\n" + T + "°" + "  F" + "\n"
     variable_Z = 0
     # End of variables used for functions 
     #-----------------------------------
