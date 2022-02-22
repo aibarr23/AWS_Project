@@ -1,4 +1,4 @@
-import pyowm
+# import pyowm
 
 #libraries to use
 from pyowm.commons import exceptions
@@ -77,7 +77,7 @@ url = f'https://weather.com/en-IN/weather/hourbyhour/l/e0abde3003a88dedecad92fed
 r = session.get(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36'})
 
 #print(r.html.find('title', first=True).text)
-x = r.html.find('div.DetailsSummary--DetailsSummary--2HluQ h2.DetailsSummary--daypartName--2FBp2', first=True).text
+# x = r.html.find('div.DetailsSummary--DetailsSummary--2HluQ h2.DetailsSummary--daypartName--2FBp2', first=True).text
 y = r.html.find('div.DetailsSummary--precip--1ecIJ', first=True).text
 
 divs = r.html.find('div.DetailsSummary--DetailsSummary--2HluQ')
@@ -88,7 +88,7 @@ for div in divs:
     if (count <= 12):
         x1 = div.find('div.DetailsSummary--DetailsSummary--2HluQ h2.DetailsSummary--daypartName--2FBp2', first=True).text
         print(x1)
-        y1 = div.find('div.DetailsSummary--precip--1ecIJ', first=True).text   
+        y1 = div.find('div.DetailsSummary--precip--1ecIJ span', first=True).text   
         print(y1)
         print("\n")
         count += 1

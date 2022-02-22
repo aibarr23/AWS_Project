@@ -5,6 +5,9 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.lang.builder import Builder
 from helper import KV
 
+from Weather_data_collection import formattedktof, formattedktof_feelslike, formattedmbtoinhg, formattedkmhr, x, clouds
+from Weather_data_collection import humidity
+
 class Tab(MDFloatLayout, MDTabsBase):
     pass
 class Weather_tab(MDFloatLayout, MDTabsBase):
@@ -48,13 +51,16 @@ class AWSApp(MDApp):
         T = "-.-"
         Tfl = "-.-"
         Ttype = "Celsius" #getTempType_FC(desired_type)
-        s = "\nTemperature: " + T + "°" + "    Feels like:" + Tfl + "°" 
+
+        T = formattedktof
+        Tfl = formattedktof_feelslike
+        s = "\nFeels like: " + Tfl + "°"  + "  F"
         return  s
     
 
     # this will show the data focused on water: for the precipitation, and humidity
     def Show_Water_data():
-        H = "-.-"
+        H = str(humidity)
         Per = "-.-"
 
         s = "Precipitation:  " + Per + "%" + "\n" + "Humidity:  " + H + "%"
@@ -63,12 +69,12 @@ class AWSApp(MDApp):
 
     # this function will show the data regarding the ambient 
     def Show_Air_data():
-        Pr = "-.-"
-        Ws = "-.-"
-        Cl = "-.-"
+        Pr = formattedmbtoinhg
+        Ws = formattedkmhr
+        Cl = str(clouds)
         C_info = "--"
 
-        s = "Pressure: " + Pr + " hPa" + "\n\n" + "Wind speed: " + Ws + " km/hr\n\n" + "Cloud:" + Cl + "%   " + C_info
+        s = "Pressure: " + Pr + " hPa" + "\n\n" + "Wind speed: " + Ws + " km/hr\n Wind direction: " + x + "\n\n" + "Cloud: " + Cl + "%   "
 
         return s
 
@@ -81,8 +87,8 @@ class AWSApp(MDApp):
     Tdata = Show_Temp_Data()
     Pdata = Show_Water_data()
     Adata = Show_Air_data()
-    T = "-.-"
-    CTemp = "\n" + T + "°" + "  C" + "\n"
+    T = formattedktof
+    CTemp = "\n" + T + "°" + "  F" + "\n"
     variable_Z = 0
     # End of variables used for functions 
     #-----------------------------------
