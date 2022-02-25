@@ -162,6 +162,9 @@ MDBoxLayout:
                     rows: 5
                     spacing: "40dp"
 
+                    OneLineListItem:
+                        text: app.getDT
+
                     MDCard:
                         orientation: "vertical"
                         size_hint: .5, None
@@ -203,7 +206,7 @@ MDBoxLayout:
                         MDLabel:
                             halign: "center"
                             font_style: "H3"
-                            text: app.Pdata
+                            text: app.Wdata
 
                     MDCard:
                         size_hint: .5, None

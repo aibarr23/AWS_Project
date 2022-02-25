@@ -8,6 +8,7 @@ from helper import KV
 from Weather_data_collection import formattedktof, formattedktof_feelslike, formattedmbtoinhg, formattedkmhr, x, clouds
 from Weather_data_collection import humidity
 
+from datetime import datetime
 class Tab(MDFloatLayout, MDTabsBase):
     pass
 class Weather_tab(MDFloatLayout, MDTabsBase):
@@ -38,19 +39,19 @@ class AWSApp(MDApp):
         self.root.ids.tabs.add_widget(plant_tab(icon="flower"))
         self.root.ids.tabs.add_widget(Tab(icon="flare"))
 
-    # this will get the type of temperature from the weather data collection code
-    # and choose the one that will be used    
-    def getTempType_FC(type):
-        if type == "Celsius":
-            return "Celsius"
-        else:
-            return "Fahrenheit"    
+    # # this will get the type of temperature from the weather data collection code
+    # # and choose the one that will be used    
+    # def getTempType_FC(type):
+    #     if type == "Celsius":
+    #         return "Celsius"
+    #     else:
+    #         return "Fahrenheit"    
     
     # this will show the data from the weather data collector
     def Show_Temp_Data():
         T = "-.-"
         Tfl = "-.-"
-        Ttype = "Celsius" #getTempType_FC(desired_type)
+        # Ttype = "Celsius" #getTempType_FC(desired_type)
 
         T = formattedktof
         Tfl = formattedktof_feelslike
@@ -72,11 +73,35 @@ class AWSApp(MDApp):
         Pr = formattedmbtoinhg
         Ws = formattedkmhr
         Cl = str(clouds)
-        C_info = "--"
+        # C_info = "--"
 
         s = "Pressure: " + Pr + " hPa" + "\n\n" + "Wind speed: " + Ws + " km/hr\n Wind direction: " + x + "\n\n" + "Cloud: " + Cl + "%   "
 
         return s
+
+    # following function is for knowing the time and date this function was called
+    #
+    def Get_Date_Time():
+
+        # datetime object containing current date and time
+        now = datetime.now()
+        # print("now =", now)
+
+        # dd/mm/YY H:M:S
+        dt_string = " Date and Time weather was updated:" + now.strftime("%d/%m/%Y %H:%M:%S\n")
+        # print("date and time =", dt_string)	
+        return dt_string
+
+    # this function is for the use of the refresh button 
+    # will refresh the weather information every time it is pressed
+    def refresh_weather(self):
+        Current_City = "Weather Info for City: " + "Chicago"
+        Tdata = self.Show_Temp_Data()
+        Wdata = self.Show_Water_data()
+        Adata = self.Show_Air_data()
+        getDT = self.Get_Date_Time()
+        T = formattedktof
+        CTemp = "\n" + T + "°" + "  F" + "\n"
 
     # bellow this there will be variables used as functions inside the KV string that will
     # be used to build the apps main body
@@ -85,12 +110,16 @@ class AWSApp(MDApp):
     # This will show the city the weather information is from
     Current_City = "Weather Info for City: " + "Chicago"
     Tdata = Show_Temp_Data()
-    Pdata = Show_Water_data()
+    Wdata = Show_Water_data()
     Adata = Show_Air_data()
+    getDT = Get_Date_Time()
     T = formattedktof
     CTemp = "\n" + T + "°" + "  F" + "\n"
     variable_Z = 0
+    W_refresh = refresh_weather()
     # End of variables used for functions 
     #-----------------------------------
+
+    
 
 AWSApp().run()
