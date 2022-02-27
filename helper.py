@@ -35,22 +35,22 @@ MDBoxLayout:
             MDBoxLayout:
                 orientation: "vertical"
                 
-                MDToolbar: 
+                MDToolbar:
                     id: weatherheading
                     elevation: 10
                     halign: "center"
 
-                    title: app.Current_City   
-                    pos_hint: {"center_y": .5, "pos_hint_x": 0.5}  
-                    font_style: "H4" 
+                    title: app.Current_City
+                    pos_hint: {"center_y": .5, "pos_hint_x": 0.5}
+                    font_style: "H4"
 
                     right_action_items: [["refresh", app.refresh_weather, "Refresh"]]
                 
                     
                 
-                MDStackLayout:               
+                MDStackLayout:
 
-                    ScrollView: 
+                    ScrollView:
                         pos_hint: {'center_x': .5}
                         adaptive_size: True
                         
@@ -143,17 +143,17 @@ MDBoxLayout:
                 color_active: get_color_from_hex("#f3ab44")
             
 
-                MDToolbar: 
+                MDToolbar:
                     elevation: 10
                     halign: "center"
 
-                    title: "System Status" 
-                    pos_hint: {"center_y": .5, "pos_hint_x": 0.5}  
-                    font_style: "H4" 
+                    title: "System Status"
+                    pos_hint: {"center_y": .5, "pos_hint_x": 0.5}
+                    font_style: "H4"
 
-                MDStackLayout:               
+                MDStackLayout:
 
-                    ScrollView: 
+                    ScrollView:
                         pos_hint: {'center_x': .5}
                         adaptive_size: True
                         
@@ -192,17 +192,17 @@ MDBoxLayout:
                 color_active: get_color_from_hex("#f3ab44")
             
 
-                MDToolbar: 
+                MDToolbar:
                     elevation: 10
                     halign: "center"
 
-                    title: "Plant Information" 
-                    pos_hint: {"center_y": .5, "pos_hint_x": 0.5}  
-                    font_style: "H4" 
+                    title: "Plant Information"
+                    pos_hint: {"center_y": .5, "pos_hint_x": 0.5}
+                    font_style: "H4"
 
-                MDStackLayout:               
+                MDStackLayout:
 
-                    ScrollView: 
+                    ScrollView:
                         pos_hint: {'center_x': .5}
                         adaptive_size: True
 

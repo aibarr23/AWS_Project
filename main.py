@@ -7,10 +7,13 @@ from kivy.clock import Clock
 from kivy.lang.builder import Builder
 from helper import KV
 
-from Weather_data_collection import formattedktof, formattedktof_feelslike, formattedmbtoinhg, formattedkmhr, x, clouds
-from Weather_data_collection import humidity
+# from Weather_data_collection import formattedktof, formattedktof_feelslike, formattedmbtoinhg, formattedkmhr, x, clouds
+# from Weather_data_collection import humidity, z
+from Weather_data_collection import get_weather
 
 from datetime import datetime
+
+
 class Tab(MDFloatLayout, MDTabsBase):
     pass
 class Weather_tab(MDFloatLayout, MDTabsBase):
@@ -23,7 +26,7 @@ class plant_tab(MDBoxLayout, MDTabsBase):
 
 # this will show the data from the weather data collector
 def Show_Temp_Data():
-    # formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds = get_weather()
+    formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
     T = "-.-"
     Tfl = "-.-"
     # Ttype = "Celsius" #getTempType_FC(desired_type)
@@ -35,7 +38,7 @@ def Show_Temp_Data():
 
 # this will show the data focused on water: for the precipitation, and humidity
 def Show_Water_data():
-    # formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds = get_weather()
+    formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
     H = str(humidity)
     Per = "-.-"
 
@@ -43,9 +46,9 @@ def Show_Water_data():
 
     return s
 
-# this function will show the data regarding the ambient 
+# this function will show the data regarding the ambient
 def Show_Air_data():
-    # formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds = get_weather()
+    formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
     Pr = formattedmbtoinhg
     Ws = formattedkmhr
     Cl = str(clouds)
@@ -64,7 +67,7 @@ def Get_Date_Time():
 
     # dd/mm/YY H:M:S
     dt_string = " Date and Time weather was updated:" + now.strftime(" %d/%m/%Y %H:%M:%S\n")
-    # print("date and time =", dt_string)	
+    # print("date and time =", dt_string)
     return dt_string
 
 
@@ -77,7 +80,7 @@ def Get_Date_Time():
 class AWSApp(MDApp):
     
     def build(self):
-        self.theme_cls.theme_style = "Light"# "Dark" 
+        self.theme_cls.theme_style = "Light"# "Dark"
         self.theme_cls.primary_palette= "BlueGray"
         self.theme_cls.primary_hue = "900"
 
@@ -96,9 +99,9 @@ class AWSApp(MDApp):
         # self.root.ids.tabs.add_widget(Tab(icon="flare"))
         pass
 
-   
 
-    # this function is for the use of the refresh button 
+
+    # this function is for the use of the refresh button
     # will refresh the weather information every time it is pressed
     def refresh_weather(self, *args):
         def refresh_weather(interval):
@@ -107,16 +110,18 @@ class AWSApp(MDApp):
             # print(self.root.ids)
             # self.root.ids.weabar.clear_widgets()
             # print(self.root.ids)
-            global Current_City 
-            global Tdata
-            global Wdata
-            global Adata
-            global getDT
-            
+            # global Current_City
+            # global Tdata
+            # global Wdata
+            # global Adata
+            # global getDT
+            formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
+            # get_weather()
             Current_City = "Weather Info for City: " + "Chicago"
-            Tdata = Show_Temp_Data()
-            Wdata = Show_Water_data()
-            Adata = Show_Air_data()
+            Tdata = "\nFeels like: " + formattedktof_feelslike + "°"  + "  F"
+            Wdata = H = "Precipitation:  " + "%" + "\n" + "Humidity:  " + str(humidity) + "%"
+
+            Adata = "Pressure: " + formattedmbtoinhg + " hPa" + "\n\n" + "Wind speed: " + formattedkmhr + " km/hr\n Wind direction: " + x + "\n\n" + "Cloud: " + str(clouds) + "%   "
             getDT = Get_Date_Time()
             T = formattedktof
             CTemp = "\n" + T + "°" + "  F" + "\n"
@@ -144,16 +149,28 @@ class AWSApp(MDApp):
     #--------------------------------------
 
     # This will show the city the weather information is from
+    # formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
+    # Current_City = "Weather Info for City: " + "Chicago"
+    # Tdata = Show_Temp_Data()
+    # Wdata = Show_Water_data()
+    # Adata = Show_Air_data()
+    # getDT = Get_Date_Time()
+    # T = formattedktof
+    # CTemp = "\n" + T + "°" + "  F" + "\n"
+    # variable_Z = 0
+    
+    formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
+    # get_weather()
     Current_City = "Weather Info for City: " + "Chicago"
-    Tdata = Show_Temp_Data()
-    Wdata = Show_Water_data()
-    Adata = Show_Air_data()
+    Tdata = "\nFeels like: " + formattedktof_feelslike + "°"  + "  F"
+    Wdata = H = "Precipitation:  " + "%" + "\n" + "Humidity:  " + str(humidity) + "%"
+
+    Adata = "Pressure: " + formattedmbtoinhg + " hPa" + "\n\n" + "Wind speed: " + formattedkmhr + " km/hr\n Wind direction: " + x + "\n\n" + "Cloud: " + str(clouds) + "%   "
     getDT = Get_Date_Time()
     T = formattedktof
     CTemp = "\n" + T + "°" + "  F" + "\n"
-    variable_Z = 0
     # W_refresh = refresh_weather()
-    # End of variables used for functions 
+    # End of variables used for functions
     #-----------------------------------
 
     
