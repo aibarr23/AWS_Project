@@ -21,213 +21,230 @@ MDBoxLayout:
         tab_hint_x: True
         id: tabs
         
-        # md_bg_color: get_color_from_hex("#b9f6ca")
-        # on_tab_switch: app.on_tab_switch(*args)
-        
-    # MDBottomAppBar:
-    #     MDToolbar:
-    #         title: "bottom"
-    #         icon: "cog"
-    #         left_action_items: [["coffee",lambda x: app.navigation()]]
-    #         mode:'free-end'
-    #         type:'bottom'
-    
-
-<Tab>
-    MDBoxLayout:
-        orientation: "vertical"
-        # md_bg_color: get_color_from_hex("#344954")
-        color_normal: get_color_from_hex("#718089")
-        color_active: get_color_from_hex("#f3ab44")
-       
-
-        MDLabel:
-            id: label
-            text: "system"
-            halign: "center"
-
-        MDBoxLayout:
-            orientation: "vertical"
-            adaptive_height: True
-            spacing: "12dp"
-
-            MDIconButton:
-                icon: "weather-sunny"
-                user_font_size: "56sp"
-
-            MDLabel:
-                text: "MDLabel"
-                font_style: "H5"
-                size_hint_y: None
-                height: self.texture_size[1]
-                pos_hint: {"center_y": .5}
-
-
-
-<plant_tab>
-    MDBoxLayout:
-        orientation: "vertical"
-        # md_bg_color: get_color_from_hex("#344954")
-        color_normal: get_color_from_hex("#718089")
-        color_active: get_color_from_hex("#f3ab44")
-       
-
-        MDToolbar: 
-            elevation: 10
-            halign: "center"
-
-            title: "Plant Information" 
-            pos_hint: {"center_y": .5, "pos_hint_x": 0.5}  
-            font_style: "H4" 
-
-        MDStackLayout:               
-
-            ScrollView: 
-                pos_hint: {'center_x': .5}
-                adaptive_size: True
 
 
 
 
 
 
-<system_tab>
+        Weather_tab:
+            id: weathertab
+            icon: "weather-sunny"
+            color_active: get_color_from_hex("#f3ab44")
 
-    MDBoxLayout:
-        orientation: "vertical"
-        # md_bg_color: get_color_from_hex("#344954")
-        color_normal: get_color_from_hex("#718089")
-        color_active: get_color_from_hex("#f3ab44")
-       
-
-        MDToolbar: 
-            elevation: 10
-            halign: "center"
-
-            title: "System Status" 
-            pos_hint: {"center_y": .5, "pos_hint_x": 0.5}  
-            font_style: "H4" 
-
-        MDStackLayout:               
-
-            ScrollView: 
-                pos_hint: {'center_x': .5}
-                adaptive_size: True
+            MDBoxLayout:
+                orientation: "vertical"
                 
-                MDList:
+                MDToolbar: 
+                    id: weatherheading
+                    elevation: 10
                     halign: "center"
-                    cols: 1
-                    rows: 5
-                    spacing: "40dp"
 
+                    title: app.Current_City   
+                    pos_hint: {"center_y": .5, "pos_hint_x": 0.5}  
+                    font_style: "H4" 
+
+                    right_action_items: [["refresh", app.refresh_weather, "Refresh"]]
+                
+                    
+                
+                MDStackLayout:               
+
+                    ScrollView: 
+                        pos_hint: {'center_x': .5}
+                        adaptive_size: True
+                        
+                        MDList:
+                            halign: "center"
+                            cols: 1
+                            rows: 5
+                            spacing: "40dp"
+
+                            OneLineListItem:
+                                id: datetime
+                                text: app.getDT
+
+                            MDCard:
+                                orientation: "vertical"
+                                size_hint: .5, None
+                                height: "300dp"
+
+                                padding: 30, 30, 30, 30
+                                bg_light:
+                                elevation: 20
+                                radius: 40
+
+                                MDLabel:
+                                    halign: "center"
+                                    font_style: "H5"
+                                    text: "Weather for Today"
+
+                                MDLabel:
+                                    id: cd1line1
+                                    halign: "center"
+                                    font_style: "H1"
+                                    text: app.CTemp
+
+                                MDSeparator:
+
+                                MDLabel:
+                                    id: cd1line2
+                                    halign: "center"
+                                    font_style: "H4"
+                                    text: app.Tdata
+                                    
+
+                            MDCard:
+                                size_hint: .5, None
+                                height: "300dp"
+
+                                padding: 30, 30, 30, 30
+                                bg_light:
+                                elevation: 20
+                                radius: 40
+
+
+                                MDLabel:
+                                    id: mdc2
+                                    halign: "center"
+                                    font_style: "H3"
+                                    text: app.Wdata
+
+                            MDCard:
+                                size_hint: .5, None
+                                height: "300dp"
+
+                                padding: 30, 30, 30, 30
+                                bg_light:
+                                elevation: 20
+                                radius: 40
+
+
+                                MDLabel:
+                                    id: mdc3
+                                    halign: "center"
+                                    font_style: "H4"
+                                    text: app.Adata
         
+
+
+
+
+
+
+
+        system_tab:
+            icon: "wrench"
+
+            MDBoxLayout:
+                orientation: "vertical"
+                # md_bg_color: get_color_from_hex("#344954")
+                color_normal: get_color_from_hex("#718089")
+                color_active: get_color_from_hex("#f3ab44")
+            
+
+                MDToolbar: 
+                    elevation: 10
+                    halign: "center"
+
+                    title: "System Status" 
+                    pos_hint: {"center_y": .5, "pos_hint_x": 0.5}  
+                    font_style: "H4" 
+
+                MDStackLayout:               
+
+                    ScrollView: 
+                        pos_hint: {'center_x': .5}
+                        adaptive_size: True
+                        
+                        MDList:
+                            halign: "center"
+                            cols: 1
+                            rows: 5
+                            spacing: "40dp"
+
+                
+
+                            MDLabel:
+                                text: "Solenoid Status"
+                                halign: "center"
+                                font_style: "H4"
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                pos_hint: {"center_y": .5}
+                            MDSeparator:
+
+
+
+
+
+
+
+
+
+        plant_tab:
+            icon: "flower"
+
+            MDBoxLayout:
+                orientation: "vertical"
+                # md_bg_color: get_color_from_hex("#344954")
+                color_normal: get_color_from_hex("#718089")
+                color_active: get_color_from_hex("#f3ab44")
+            
+
+                MDToolbar: 
+                    elevation: 10
+                    halign: "center"
+
+                    title: "Plant Information" 
+                    pos_hint: {"center_y": .5, "pos_hint_x": 0.5}  
+                    font_style: "H4" 
+
+                MDStackLayout:               
+
+                    ScrollView: 
+                        pos_hint: {'center_x': .5}
+                        adaptive_size: True
+
+
+
+
+
+
+
+
+        Tab:
+            icon: "flare"
+
+
+            MDBoxLayout:
+                orientation: "vertical"
+                # md_bg_color: get_color_from_hex("#344954")
+                color_normal: get_color_from_hex("#718089")
+                color_active: get_color_from_hex("#f3ab44")
+            
+
+                MDLabel:
+                    id: label
+                    text: "system"
+                    halign: "center"
+
+                MDBoxLayout:
+                    orientation: "vertical"
+                    adaptive_height: True
+                    spacing: "12dp"
+
+                    MDIconButton:
+                        icon: "weather-sunny"
+                        user_font_size: "56sp"
 
                     MDLabel:
-                        text: "Solenoid Status"
-                        halign: "center"
-                        font_style: "H4"
+                        text: "MDLabel"
+                        font_style: "H5"
                         size_hint_y: None
                         height: self.texture_size[1]
                         pos_hint: {"center_y": .5}
-                    MDSeparator:
 
-
-
-<Weather_tab>
-    icon: ""
-    color_active: get_color_from_hex("#f3ab44")
-
-    MDBoxLayout:
-        orientation: "vertical"
-        
-        MDToolbar: 
-            elevation: 10
-            halign: "center"
-
-            title: app.Current_City   
-            pos_hint: {"center_y": .5, "pos_hint_x": 0.5}  
-            font_style: "H4" 
-        
-             
-        
-        MDStackLayout:               
-
-            ScrollView: 
-                pos_hint: {'center_x': .5}
-                adaptive_size: True
-                
-                MDList:
-                    halign: "center"
-                    cols: 1
-                    rows: 5
-                    spacing: "40dp"
-
-                    OneLineListItem:
-                        text: app.getDT
-
-                    MDCard:
-                        orientation: "vertical"
-                        size_hint: .5, None
-                        height: "300dp"
-
-                        padding: 30, 30, 30, 30
-                        bg_light:
-                        elevation: 20
-                        radius: 40
-
-                        MDLabel:
-                            halign: "center"
-                            font_style: "H5"
-                            text: "Weather for Today"
-
-                        MDLabel:
-                            halign: "center"
-                            font_style: "H1"
-                            text: app.CTemp
-
-                        MDSeparator:
-
-                        MDLabel:
-                            halign: "center"
-                            font_style: "H4"
-                            text: app.Tdata
-                            
-
-                    MDCard:
-                        size_hint: .5, None
-                        height: "300dp"
-
-                        padding: 30, 30, 30, 30
-                        bg_light:
-                        elevation: 20
-                        radius: 40
-
-
-                        MDLabel:
-                            halign: "center"
-                            font_style: "H3"
-                            text: app.Wdata
-
-                    MDCard:
-                        size_hint: .5, None
-                        height: "300dp"
-
-                        padding: 30, 30, 30, 30
-                        bg_light:
-                        elevation: 20
-                        radius: 40
-
-
-                        MDLabel:
-                            halign: "center"
-                            font_style: "H4"
-                            text: app.Adata
-                    
-                   
-
-
-                        
-                        
 
 
             
