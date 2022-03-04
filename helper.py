@@ -13,7 +13,7 @@ MDBoxLayout:
         color_active: get_color_from_hex("#f3ab44")
         title: "Automated Watering APP"
         elevation: 10
-        # right_action_items: [["menu", lambda x: app.callback_1()]]
+        right_action_items: [["brightness-4", app.theme_style]]
 
     
     MDTabs:
@@ -22,19 +22,17 @@ MDBoxLayout:
         id: tabs
         
 
-
-
-
-
-
         Weather_tab:
             id: weathertab
             icon: "weather-sunny"
             color_active: get_color_from_hex("#f3ab44")
 
+            
+
             MDBoxLayout:
                 orientation: "vertical"
                 
+
                 MDToolbar:
                     id: weatherheading
                     elevation: 10
@@ -49,17 +47,18 @@ MDBoxLayout:
                     
                 
                 MDStackLayout:
-
                     ScrollView:
+                        id: scrview
                         pos_hint: {'center_x': .5}
                         adaptive_size: True
                         
                         MDList:
+                            id: list
                             halign: "center"
                             cols: 1
                             rows: 5
                             spacing: "40dp"
-
+                            
                             OneLineListItem:
                                 id: datetime
                                 text: app.getDT
@@ -125,7 +124,7 @@ MDBoxLayout:
                                     halign: "center"
                                     font_style: "H4"
                                     text: app.Adata
-        
+            
 
 
 
@@ -222,34 +221,26 @@ MDBoxLayout:
                 # md_bg_color: get_color_from_hex("#344954")
                 color_normal: get_color_from_hex("#718089")
                 color_active: get_color_from_hex("#f3ab44")
-            
 
-                MDLabel:
-                    id: label
-                    text: "system"
+                MDToolbar:
+                    elevation: 10
                     halign: "center"
 
-                MDBoxLayout:
-                    orientation: "vertical"
-                    adaptive_height: True
-                    spacing: "12dp"
+                    title: "App Information"
+                    pos_hint: {"center_y": .5, "pos_hint_x": 0.5}
+                    font_style: "H4"
 
-                    MDIconButton:
-                        icon: "weather-sunny"
-                        user_font_size: "56sp"
+                MDStackLayout:
 
-                    MDLabel:
-                        text: "MDLabel"
-                        font_style: "H5"
-                        size_hint_y: None
-                        height: self.texture_size[1]
-                        pos_hint: {"center_y": .5}
-
-
-
+                    ScrollView:
+                        pos_hint: {'center_x': .5}
+                        adaptive_size: True
             
-            
-                
+                        MDList:
+                            halign: "center"
+                            cols: 1
+                            rows: 5
+                            spacing: "40dp"
 
 '''
 

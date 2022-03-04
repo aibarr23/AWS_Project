@@ -1,7 +1,9 @@
 from kivymd.app import MDApp
 from kivymd.uix.tab import MDTabsBase
 from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.button import MDFlatButton
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.dialog import MDDialog
 
 from kivy.clock import Clock
 from kivy.lang.builder import Builder
@@ -25,36 +27,25 @@ class plant_tab(MDBoxLayout, MDTabsBase):
 
 
 # this will show the data from the weather data collector
-def Show_Temp_Data():
-    formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
-    T = "-.-"
-    Tfl = "-.-"
+def Show_Temp_Data(Tfl):
+    # Tfl = "-.-"
     # Ttype = "Celsius" #getTempType_FC(desired_type)
 
-    T = formattedktof
-    Tfl = formattedktof_feelslike
     s = "\nFeels like: " + Tfl + "°"  + "  F"
     return  s
 
 # this will show the data focused on water: for the precipitation, and humidity
-def Show_Water_data():
-    formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
+def Show_Water_data(humidity, Perc):
     H = str(humidity)
     Per = "-.-"
-
     s = "Precipitation:  " + Per + "%" + "\n" + "Humidity:  " + H + "%"
 
     return s
 
 # this function will show the data regarding the ambient
-def Show_Air_data():
-    formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
-    Pr = formattedmbtoinhg
-    Ws = formattedkmhr
-    Cl = str(clouds)
-    # C_info = "--"
+def Show_Air_data(Pr, Ws, x, Cl):
 
-    s = "Pressure: " + Pr + " hPa" + "\n\n" + "Wind speed: " + Ws + " km/hr\n Wind direction: " + x + "\n\n" + "Cloud: " + Cl + "%   "
+    s = "Pressure: " + Pr + " hPa" + "\n\n" + "Wind speed: " + Ws + " km/hr\n Wind direction: " + x + "\n\n" + "Cloud: " + str(Cl) + "%   "
 
     return s
 
@@ -84,56 +75,34 @@ class AWSApp(MDApp):
         self.theme_cls.primary_palette= "BlueGray"
         self.theme_cls.primary_hue = "900"
 
-
-        # self.theme_cls.primary_accent_palette= "Teal"
-
-        # self.theme_cls.secondary_palette= "Teal"
-        # self.theme_cls.secondary_hue = "A200"
-
         return Builder.load_string(KV)
 
     def on_start(self):
-        # self.root.ids.tabs.add_widget(Weather_tab(icon="weather-sunny"))
-        # self.root.ids.tabs.add_widget(system_tab(icon="wrench"))
-        # self.root.ids.tabs.add_widget(plant_tab(icon="flower"))
-        # self.root.ids.tabs.add_widget(Tab(icon="flare"))
         pass
 
-
+    # this is for the button to change the theme_style of the app from light too dark
+    def theme_style(self, *args):
+        def theme_style(interval):
+            if self.theme_cls.theme_style == "Light":
+                self.theme_cls.theme_style = "Dark"
+            else:
+                self.theme_cls.theme_style = "Light"
+        Clock.schedule_once(theme_style, 1)
 
     # this function is for the use of the refresh button
     # will refresh the weather information every time it is pressed
     def refresh_weather(self, *args):
         def refresh_weather(interval):
-            # self.root.ids.tabs.clear_widgets(Weather_tab)
+            
 
-            # print(self.root.ids)
-            # self.root.ids.weabar.clear_widgets()
-            # print(self.root.ids)
-            # global Current_City
-            # global Tdata
-            # global Wdata
-            # global Adata
-            # global getDT
-            formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
-            # get_weather()
+            rain, formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
             Current_City = "Weather Info for City: " + "Chicago"
-            Tdata = "\nFeels like: " + formattedktof_feelslike + "°"  + "  F"
-            Wdata = H = "Precipitation:  " + "%" + "\n" + "Humidity:  " + str(humidity) + "%"
-
-            Adata = "Pressure: " + formattedmbtoinhg + " hPa" + "\n\n" + "Wind speed: " + formattedkmhr + " km/hr\n Wind direction: " + x + "\n\n" + "Cloud: " + str(clouds) + "%   "
+            Tdata = Show_Temp_Data(formattedktof_feelslike)
+            Wdata = Show_Water_data(humidity, rain)
+            Adata = Show_Air_data(formattedmbtoinhg, formattedkmhr, x, clouds)
             getDT = Get_Date_Time()
             T = formattedktof
             CTemp = "\n" + T + "°" + "  F" + "\n"
-
-            print(Current_City)
-            print(Tdata)
-            print(Wdata)
-            print(Adata)
-            print(getDT)
-            print(T)
-            print(CTemp)
-
 
             self.root.ids.weatherheading.title = Current_City
             self.root.ids.datetime.text = getDT
@@ -142,6 +111,18 @@ class AWSApp(MDApp):
             self.root.ids.mdc2.text = Wdata
             self.root.ids.mdc3.text = Adata
 
+            # the function bellow will check the temperature
+            # if the temperature is 20 degrees fahrenheit or bellow then the
+            # user will get a notification regarding the pvc pipes
+            if int(T) <= 20:
+                self.dialog = MDDialog(
+                    title = "The temperature for today is bellow freezing point. Be sure to remove water from the system, If ambient temperature is bellow 20 F",
+                    buttons = [
+                        MDFlatButton(text = "Click outside of the box to return")
+                    ]
+                )
+                self.dialog.open()
+
         Clock.schedule_once(refresh_weather, 1)
 
     # bellow this there will be variables used as functions inside the KV string that will
@@ -149,27 +130,17 @@ class AWSApp(MDApp):
     #--------------------------------------
 
     # This will show the city the weather information is from
-    # formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
-    # Current_City = "Weather Info for City: " + "Chicago"
-    # Tdata = Show_Temp_Data()
-    # Wdata = Show_Water_data()
-    # Adata = Show_Air_data()
-    # getDT = Get_Date_Time()
-    # T = formattedktof
-    # CTemp = "\n" + T + "°" + "  F" + "\n"
-    # variable_Z = 0
-    
-    formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
-    # get_weather()
+    rain, formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
+    print(rain)
     Current_City = "Weather Info for City: " + "Chicago"
-    Tdata = "\nFeels like: " + formattedktof_feelslike + "°"  + "  F"
-    Wdata = H = "Precipitation:  " + "%" + "\n" + "Humidity:  " + str(humidity) + "%"
-
-    Adata = "Pressure: " + formattedmbtoinhg + " hPa" + "\n\n" + "Wind speed: " + formattedkmhr + " km/hr\n Wind direction: " + x + "\n\n" + "Cloud: " + str(clouds) + "%   "
+    Tdata = Show_Temp_Data(formattedktof_feelslike)
+    Wdata = Show_Water_data(humidity, rain)
+    Adata = Show_Air_data(formattedmbtoinhg, formattedkmhr, x, clouds)
     getDT = Get_Date_Time()
+    # apptheme_style = theme_style()
     T = formattedktof
     CTemp = "\n" + T + "°" + "  F" + "\n"
-    # W_refresh = refresh_weather()
+    
     # End of variables used for functions
     #-----------------------------------
 
