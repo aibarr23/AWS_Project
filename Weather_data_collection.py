@@ -6,17 +6,14 @@ from pyowm.utils import formatting, measurables, timestamps
 from pyowm.weatherapi25.uris import ICONS_BASE_URI
 from pyowm.owm import OWM
 
-# #gathering data from apikey
-
 def get_weather():
     # global formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z
-
     #gathering data from apikey
-    owm=OWM('d4adacdab2c752357183aaafdb017bbb')
+    owm=OWM('d4adacdab2c752357183aaafdb017bbb')                  
     mgr = owm.weather_manager()
     Weather = mgr.weather_at_place("Chicago")
     Data = Weather.weather
-    
+   
     #gathering data and printing result
     temp=Data.temp
     pressure=Data.pressure
@@ -62,7 +59,7 @@ def get_weather():
     #printing out all the data
     print(f"Temperature: {formattedktof}F")
     print(f"Feels like: {formattedktof_feelslike}F")
-    print(f"Pressure: {formattedmbtoinhg}inHg")
+    print(f"Pressure: {formattedmbtoinhg}inHg") 
     print(f"Humidity: {humidity}%")
     print(f"Wind conditions: {x} winds at {formattedkmhr}km/hr")
     print(f"Cloud cover: {clouds}%")
@@ -70,36 +67,62 @@ def get_weather():
 
 
     '''
-    Web scraping starts here.
+    Web scraping starts here. 
     It is separate from the openweathermap api data.
     '''
     from requests_html import HTMLSession, HTML
 
     session = HTMLSession()
 
+    #url where precip percentage is gathered from
     url = f'https://weather.com/en-IN/weather/hourbyhour/l/e0abde3003a88dedecad92fedc96375000c16843287a51dbf2cd92f062217180'
 
     r = session.get(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36'})
 
-    #print(r.html.find('title', first=True).text)
-    # x = r.html.find('div.DetailsSummary--DetailsSummary--2HluQ h2.DetailsSummary--daypartName--2FBp2', first=True).text
-    y = r.html.find('div.DetailsSummary--precip--1ecIJ', first=True).text
-
+    #code searches here for precip in website
     divs = r.html.find('div.DetailsSummary--DetailsSummary--2HluQ')
     rats = r.html.find('div.DetailsSummary--precip--1ecIJ')
+
+    #this count is for how many hours you want to gather precip chance data for
+    #initialized at 0 hours
     count = 0
 
-    z = []
+    z=[]
 
+    #printing out precip chance for next hours
     for div in divs:
         z.clear()
-        if (count <= 12):
+        #change this count here for number of hours desired
+        if (count < 1):
             x1 = div.find('div.DetailsSummary--DetailsSummary--2HluQ h2.DetailsSummary--daypartName--2FBp2', first=True).text
             print(x1)
-            y1 = div.find('div.DetailsSummary--precip--1ecIJ span', first=True).text
+            y1 = div.find('div.DetailsSummary--precip--1ecIJ span', first=True).text   
             print(y1)
             print("\n")
             count += 1
             z.append(x1+"\n"+y1)
 
     return rain, formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z
+
+#all this code below is where the rain measurement web scraping goes
+#Ping tom park is closest weather gauge to campus. ~1.25mi from campus
+def get_precipitation(location:str, hrs:list):
+    import requests
+    url = "https://il.water.usgs.gov/gmaps/precip/data/rainfall_outIL_WSr2.json"
+    r = requests.get('https://il.water.usgs.gov/gmaps/precip/data/rainfall_outIL_WSr2.json').json()
+   
+    #searching for data in json file
+    data = [i for i in r['value']['items'] if i['title'] == location][0] 
+    
+    #printing out data gathered from json file
+    for k,v in data.items():
+        if k in hrs:
+            print(f'{k}={v}') #all values in inches
+
+
+    if __name__ == "__main__":
+    
+        location = "RAIN GAGE AT PING TOM PARK AT CHICAGO, IL"   #Do not change this line. This is for the location
+        hrs = ['precip1hrvalue', 'precip3hrvalue', 'precip6hrvalue', 'precip12hrvalue'] #change hourly values here
+
+        get_precipitation(location, hrs)
