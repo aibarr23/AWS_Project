@@ -114,7 +114,7 @@ class AWSApp(MDApp):
             # the function bellow will check the temperature
             # if the temperature is 20 degrees fahrenheit or bellow then the
             # user will get a notification regarding the pvc pipes
-            if int(T) <= 20:
+            if float(T) <= 20:
                 self.dialog = MDDialog(
                     title = "The temperature for today is bellow freezing point. Be sure to remove water from the system, If ambient temperature is bellow 20 F",
                     buttons = [
