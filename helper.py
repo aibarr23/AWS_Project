@@ -204,6 +204,95 @@ MDBoxLayout:
                     ScrollView:
                         pos_hint: {'center_x': .5}
                         adaptive_size: True
+                        
+                        MDList:
+                            halign: "center"
+                            cols: 1
+                            rows: 5
+                            spacing: "40dp"
+
+                            #start of first plant
+                            MDCard:
+                                orientation: "vertical"
+                                size_hint: .5, None
+                                height: "300dp"
+                       
+                                padding: 30, 30, 30, 30
+                                bg_light:
+                                elevation: 20
+                                radius: 40
+
+                                MDLabel:
+                                    halign: "center"
+                                    font_style: "H3"
+                                    text: "--Plant Name--"
+
+                                MDLabel:
+                                    halign: "center"
+                                    font_style: "H5"
+                                    text: "--Detailed explanation of plant here--"
+
+                            
+                            MDGridLayout:
+                                cols: 1
+                                row_default_height: (self.width - self.cols*self.spacing[0]) / self.cols
+                                row_force_default: True
+                                adaptive_height: True
+                                padding: dp(4), dp(4)
+                                spacing: dp(4)
+
+                                SmartTileWithLabel:
+                                    source: "plant1.jpg"
+                                    text: "[size=26]--Plant Name-- 1[/size]"
+                                    allow_stretch: True
+                                    keep_ratio: True
+
+                                                  
+                            MDCard:
+                                orientation: "vertical"
+                                size_hint: .5, None
+                                height: "300dp"
+
+                                padding: 30, 30, 30, 30
+                                bg_light:
+                                elevation: 20
+                                radius: 40
+
+                                MDLabel:
+                                    halign: "center"
+                                    font_style: "H5"
+                                    text: "Current Soil Moisture of Plant #1: "
+
+                                MDLabel:
+                                    halign: "center"
+                                    font_style: "H5"
+                                    text: "Plant #1 Watered by Solenoid --Solenoid number here-- "
+
+                                MDSeparator:
+
+                                MDLabel:
+                                    halign: "center"
+                                    font_style: "H5"
+                                    text: "Current Soil Moisture of Plant #2: "
+
+                                MDLabel:
+                                    halign: "center"
+                                    font_style: "H5"
+                                    text: "Plant #2 Watered by Solenoid --Solenoid number here-- "
+
+                                MDSeparator:
+
+                                MDLabel:
+                                    halign: "center"
+                                    font_style: "H5"
+                                    text: "Current Soil Moisture of Plant #3: "
+
+                                MDLabel:
+                                    halign: "center"
+                                    font_style: "H5"
+                                    text: "Plant #3 Watered by Solenoid --Solenoid number here-- "
+                        
+                        
 
 
 
