@@ -15,7 +15,6 @@ from Weather_data_collection import get_weather
 
 from datetime import datetime
 
-
 class Tab(MDFloatLayout, MDTabsBase):
     pass
 class Weather_tab(MDFloatLayout, MDTabsBase):
@@ -60,11 +59,6 @@ def Get_Date_Time():
     dt_string = " Date and Time weather was updated:" + now.strftime(" %d/%m/%Y %H:%M:%S\n")
     # print("date and time =", dt_string)
     return dt_string
-
-
-
-
-
 
 
 
@@ -123,7 +117,9 @@ class AWSApp(MDApp):
                 )
                 self.dialog.open()
 
+        # the following will runt the function once and run it again after given interval
         Clock.schedule_once(refresh_weather, 1)
+        Clock.schedule_interval(refresh_weather, 25*60)# the second input is for seconds
 
     # bellow this there will be variables used as functions inside the KV string that will
     # be used to build the apps main body
@@ -131,19 +127,16 @@ class AWSApp(MDApp):
 
     # This will show the city the weather information is from
     rain, formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
-    print(rain)
     Current_City = "Weather Info for City: " + "Chicago"
     Tdata = Show_Temp_Data(formattedktof_feelslike)
     Wdata = Show_Water_data(humidity, rain)
     Adata = Show_Air_data(formattedmbtoinhg, formattedkmhr, x, clouds)
     getDT = Get_Date_Time()
-    # apptheme_style = theme_style()
     T = formattedktof
     CTemp = "\n" + T + "°" + "  F" + "\n"
-    
     # End of variables used for functions
     #-----------------------------------
 
-    
+
 
 AWSApp().run()
