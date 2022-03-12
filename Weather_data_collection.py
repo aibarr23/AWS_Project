@@ -88,10 +88,10 @@ def get_weather():
     count = 0
 
     z=[]
-
+    z.clear()
     #printing out precip chance for next hours
     for div in divs:
-        z.clear()
+        
         #change this count here for number of hours desired
         if (count < 1):
             x1 = div.find('div.DetailsSummary--DetailsSummary--2HluQ h2.DetailsSummary--daypartName--2FBp2', first=True).text

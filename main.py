@@ -36,8 +36,8 @@ def Show_Temp_Data(Tfl):
 # this will show the data focused on water: for the precipitation, and humidity
 def Show_Water_data(humidity, Perc):
     H = str(humidity)
-    Per = "-.-"
-    s = "Precipitation:  " + Per + "%" + "\n" + "Humidity:  " + H + "%"
+    Per = Perc
+    s = "Precipitation:  " + Per  + "\n" + "Humidity:  " + H + "%"
 
     return s
 
@@ -92,7 +92,7 @@ class AWSApp(MDApp):
             rain, formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
             Current_City = "Weather Info for City: " + "Chicago"
             Tdata = Show_Temp_Data(formattedktof_feelslike)
-            Wdata = Show_Water_data(humidity, rain)
+            Wdata = Show_Water_data(humidity, z[0])
             Adata = Show_Air_data(formattedmbtoinhg, formattedkmhr, x, clouds)
             getDT = Get_Date_Time()
             T = formattedktof
@@ -129,7 +129,7 @@ class AWSApp(MDApp):
     rain, formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
     Current_City = "Weather Info for City: " + "Chicago"
     Tdata = Show_Temp_Data(formattedktof_feelslike)
-    Wdata = Show_Water_data(humidity, rain)
+    Wdata = Show_Water_data(humidity, z[0])
     Adata = Show_Air_data(formattedmbtoinhg, formattedkmhr, x, clouds)
     getDT = Get_Date_Time()
     T = formattedktof
