@@ -10,6 +10,7 @@
 
  by dlf (Metodo2 srl)
 
+# Note following code was repurposed for a project use
  */
 
 #include <SPI.h>
@@ -122,21 +123,54 @@ void loop() {
       packetBuffer[len] = 0;
 
     }
-
     Serial.println("Contents:");
 
     Serial.println(packetBuffer);
+    // check what the packet's purpose
+    // packet format: [5 characters;content-->](content are dividie by ";")(5 characters represents its reason)
+    // 5 Characters types:
+    // WData: ; (this is for weather data) format-> Temperature;Feels like Temperature; Precipitation
+    
+    // Get the data type the is inside of the packetBuffer
+    int p = Data.find_first_of(";");
+    DataT = Data.substr(0, 5) // this takes out the Data type in the packet buffer
+    // Update microcontroller of weather data.
+    if(DataT == "WData") {
+      //find first data value (Temperature)
+      int p2 = Data.find_first_of(";", p);
+      p += 1;
+      int s = p2 - p; // gives size of value
+      TempV = Data.substr(p, s);
 
-    // send a reply, to the IP address and port that sent us the packet we received
+      //find second data value(temp feeals like)
+      p = p2;
+      p2 = Data.find_first_of(";",p);
+      p += 1;
+      s = p2 - p;
+      Tempfl = Data.substr(p, s);
 
-    Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
+      //find final data value(precipitation)
+      p = p2;
+      p2 = Data.length();
+      p += 1;
+      s = p2 - p;
+      Prec = Data.substr(p, s);
 
-    Udp.write(ReplyBuffer);
+      //
+      // now send extracted data to its needed location
+      // so that the controller can make a decision
+      //
 
-    Udp.endPacket();
 
-  }
-}
+      // send a reply, to the IP address and port that sent us the packet we received
+      Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
+
+      ReplyBuffer[] = "Weather Data Recieved"
+
+      Udp.write(ReplyBuffer);
+
+      Udp.endPacket();
+      }
 
 void printWifiStatus() {
 
