@@ -225,12 +225,12 @@ MDBoxLayout:
                                 MDLabel:
                                     halign: "center"
                                     font_style: "H3"
-                                    text: "--Plant Name--"
+                                    text: "Plectranthus Venteri"
 
                                 MDLabel:
                                     halign: "center"
                                     font_style: "H5"
-                                    text: "--Detailed explanation of plant here--"
+                                    text: "Distinctive deeply lobed pelted leaves on self branching stout stems; the purplish mauve blossoms usually appear in late fall. Perfect where you need a tough as nails plant which gives an appearance of lacy delicacy"
 
                             
                             MDGridLayout:
