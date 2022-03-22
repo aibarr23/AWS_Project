@@ -142,6 +142,7 @@ class AWSApp(MDApp):
     CTemp = "\n" + T + "°" + "  F" + "\n"
     # End of variables used for functions
     #-----------------------------------
+    print(z[0])
 
 
 

@@ -1,4 +1,5 @@
-from socket import *
+#from socket import *
+import socket
 import time
 
 
@@ -7,22 +8,25 @@ import time
 # Currently only sending most needed Temperature, temp feals like, and precipitation
 def SendW_toCtr(T, Tfl, Pre):
     
-    address = ('10.1.15.243', 5000) #define server IP and port
-    client_socket = socket.socket(socket.AF_INET, SOCK_DGRAM) #set op the socket
+    address = ('127.0.0.1', 5000) #define server IP and port
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #set op the socket
     client_socket.settimeout(1) # Only wait 1 second for a response
     data = "WData" + ";" + T + ";" + Tfl + ";" + Pre# ";" + Ap + ";" + H + ";" + Wd + ";" + Ws + + ";" + Cp
 
     while(1):
         
-        client_socket.sendto(data, address)
+        client_socket.sendto(data.encode(), address)
 
         try:
 
             rec_data, addr = client_socket.recvfrom(2048) # read response from arduino
-            res = float(rec_data) #Convert string rec_data to float res(response)
-            print (res)#print the result
+            #res = float(rec_data) #Convert string rec_data to float res(response)
+            print("Received response from:"+ addr)
+            print (rec_data)#print the result
         except:
-            pass
+            print("Request timed out, could not send")
+            break
+            #pass
         
         time.sleep(2) #delay befor sending next command
         
