@@ -80,27 +80,20 @@ def get_weather():
     r = session.get(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36'})
 
     #code searches here for precip in website
-    divs = r.html.find('div.DetailsSummary--DetailsSummary--2HluQ')
-    rats = r.html.find('div.DetailsSummary--precip--1ecIJ')
+    # divs = r.html.find('div.DetailsSummary--DetailsSummary--2HluQ')
+    # rats = r.html.find('div.DetailsSummary--precip--1ecIJ')
 
     #this count is for how many hours you want to gather precip chance data for
     #initialized at 0 hours
-    count = 0
+    
 
-    z=[]
-    z.clear()
-    #printing out precip chance for next hours
-    for div in divs:
-        
-        #change this count here for number of hours desired
-        if (count < 1):
-            x1 = div.find('div.DetailsSummary--DetailsSummary--2HluQ h2.DetailsSummary--daypartName--2FBp2', first=True).text
-            print(x1)
-            y1 = div.find('div.DetailsSummary--precip--1ecIJ span', first=True).text   
-            print(y1)
-            print("\n")
-            count += 1
-            z.append(x1+"\n"+y1)
+    
+    x1 = r.html.find('div.DetailsSummary--DetailsSummary--2HluQ h2.DetailsSummary--daypartName--2FBp2', first=True).text
+    print(x1)
+    y1 = r.html.find('div.DetailsSummary--precip--1ecIJ span', first=True).text   
+    print(y1)
+    print("\n")
+    z = x1+"\n"+y1
 
     return rain, formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z
 

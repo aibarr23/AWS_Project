@@ -93,7 +93,7 @@ class AWSApp(MDApp):
             rain, formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
             Current_City = "Weather Info for City: " + "Chicago"
             Tdata = Show_Temp_Data(formattedktof_feelslike)
-            Wdata = Show_Water_data(humidity, z[0])
+            Wdata = Show_Water_data(humidity, z)
             Adata = Show_Air_data(formattedmbtoinhg, formattedkmhr, x, clouds)
             getDT = Get_Date_Time()
             T = formattedktof
@@ -109,7 +109,7 @@ class AWSApp(MDApp):
             # this will send the information to the arduino(Controller) via UDP cient
             # function variables format=> (Temperature);(Feels Like(temp));(Air pressure);(Humidity);(Wind direction);(Wind speed);(cloud percentage);(Precipitation(of the recent or near hour))
             # Currently only sending most needed Temperature, temp feals like, and precipitation
-            SendW_toCtr(formattedktof,formattedktof_feelslike, z[0] )
+            SendW_toCtr(formattedktof,formattedktof_feelslike, z )
 
             # the function bellow will check the temperature
             # if the temperature is 20 degrees fahrenheit or bellow then the
@@ -135,14 +135,14 @@ class AWSApp(MDApp):
     rain, formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
     Current_City = "Weather Info for City: " + "Chicago"
     Tdata = Show_Temp_Data(formattedktof_feelslike)
-    Wdata = Show_Water_data(humidity, z[0])
+    Wdata = Show_Water_data(humidity, z)
     Adata = Show_Air_data(formattedmbtoinhg, formattedkmhr, x, clouds)
     getDT = Get_Date_Time()
     T = formattedktof
     CTemp = "\n" + T + "°" + "  F" + "\n"
     # End of variables used for functions
     #-----------------------------------
-    print(z[0])
+    print(z)
 
 
 
