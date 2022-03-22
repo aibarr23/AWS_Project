@@ -296,40 +296,5 @@ MDBoxLayout:
 
 
 
-
-
-
-
-
-        Tab:
-            icon: "flare"
-
-
-            MDBoxLayout:
-                orientation: "vertical"
-                # md_bg_color: get_color_from_hex("#344954")
-                color_normal: get_color_from_hex("#718089")
-                color_active: get_color_from_hex("#f3ab44")
-
-                MDToolbar:
-                    elevation: 10
-                    halign: "center"
-
-                    title: "App Information"
-                    pos_hint: {"center_y": .5, "pos_hint_x": 0.5}
-                    font_style: "H4"
-
-                MDStackLayout:
-
-                    ScrollView:
-                        pos_hint: {'center_x': .5}
-                        adaptive_size: True
-            
-                        MDList:
-                            halign: "center"
-                            cols: 1
-                            rows: 5
-                            spacing: "40dp"
-
 '''
 

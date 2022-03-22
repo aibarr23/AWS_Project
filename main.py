@@ -12,6 +12,7 @@ from helper import KV
 # from Weather_data_collection import formattedktof, formattedktof_feelslike, formattedmbtoinhg, formattedkmhr, x, clouds
 # from Weather_data_collection import humidity, z
 from Weather_data_collection import get_weather
+from client import SendW_toCtr
 
 from datetime import datetime
 
@@ -104,6 +105,11 @@ class AWSApp(MDApp):
             self.root.ids.cd1line2.text = Tdata
             self.root.ids.mdc2.text = Wdata
             self.root.ids.mdc3.text = Adata
+            
+            # this will send the information to the arduino(Controller) via UDP cient
+            # function variables format=> (Temperature);(Feels Like(temp));(Air pressure);(Humidity);(Wind direction);(Wind speed);(cloud percentage);(Precipitation(of the recent or near hour))
+            # Currently only sending most needed Temperature, temp feals like, and precipitation
+            SendW_toCtr(formattedktof,formattedktof_feelslike, z[0] )
 
             # the function bellow will check the temperature
             # if the temperature is 20 degrees fahrenheit or bellow then the
@@ -136,6 +142,7 @@ class AWSApp(MDApp):
     CTemp = "\n" + T + "°" + "  F" + "\n"
     # End of variables used for functions
     #-----------------------------------
+    print(z[0])
 
 
 
