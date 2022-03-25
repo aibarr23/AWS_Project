@@ -1,16 +1,17 @@
 #from socket import *
 import socket
 import time
+from datetime import datetime
 
-
+address = ('127.0.0.1', 5000) #define server IP and port
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #set op the socket
+client_socket.settimeout(1) # Only wait 1 second for a response
+   
 # this will send the information to the arduino(Controller) via UDP cient
 # function variables format=> (Temperature);(Feels Like(temp));(Air pressure);(Humidity);(Wind direction);(Wind speed);(cloud percentage);(Precipitation(of the recent or near hour))
 # Currently only sending most needed Temperature, temp feals like, and precipitation
 def SendW_toCtr(T, Tfl, Pre):
     
-    address = ('127.0.0.1', 5000) #define server IP and port
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #set op the socket
-    client_socket.settimeout(1) # Only wait 1 second for a response
     data = "WData" + ";" + T + ";" + Tfl + ";" + Pre# ";" + Ap + ";" + H + ";" + Wd + ";" + Ws + + ";" + Cp
 
     while(1):
@@ -32,3 +33,21 @@ def SendW_toCtr(T, Tfl, Pre):
         
 
 
+# this loop will check for possible recieved packets
+def store_Data(self):
+    
+    try:
+        R_data, addr = client_socket.recvfrom(1024) # read response
+        time_recv = datetime.now()
+        
+        # get data and store it in text file for future analysis
+        if(R_data[0].decode().size() > 0):
+            
+            data_R = R_data[0].decode()
+            data = time_recv + ": " + data_R + "\n"
+            
+            text_file = open("data.txt", "a")
+            text_file.write(data)
+            text_file.close()
+    except:
+        pass

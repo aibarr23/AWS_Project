@@ -20,7 +20,7 @@ def get_weather():
     humidity=Data.humidity
     clouds=Data.clouds
     wind=Data.wnd
-    rain=Data.rain
+    # rain=Data.rain
 
     #converting to km/hr for wind(originally in meters/sec)
     convertkmhr=(wind['speed']*3.6)
@@ -93,9 +93,9 @@ def get_weather():
     y1 = r.html.find('div.DetailsSummary--precip--1ecIJ span', first=True).text   
     print(y1)
     print("\n")
-    z = x1+"\n"+y1
+    # z = x1+"\n"+y1
 
-    return rain, formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z
+    return formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, x1, y1
 
 #all this code below is where the rain measurement web scraping goes
 #Ping tom park is closest weather gauge to campus. ~1.25mi from campus

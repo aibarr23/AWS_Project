@@ -12,7 +12,7 @@ from helper import KV
 # from Weather_data_collection import formattedktof, formattedktof_feelslike, formattedmbtoinhg, formattedkmhr, x, clouds
 # from Weather_data_collection import humidity, z
 from Weather_data_collection import get_weather
-from client import SendW_toCtr
+from client import SendW_toCtr, store_Data
 
 from datetime import datetime
 
@@ -35,9 +35,9 @@ def Show_Temp_Data(Tfl):
     return  s
 
 # this will show the data focused on water: for the precipitation, and humidity
-def Show_Water_data(humidity, Perc):
+def Show_Water_data(humidity, x1, y1):
     H = str(humidity)
-    Per = Perc
+    Per = x1+"\n"+y1
     s = "Precipitation:  " + Per  + "\n" + "Humidity:  " + H + "%"
 
     return s
@@ -84,16 +84,20 @@ class AWSApp(MDApp):
                 self.theme_cls.theme_style = "Light"
         Clock.schedule_once(theme_style, 1)
 
+
+
+
+
     # this function is for the use of the refresh button
     # will refresh the weather information every time it is pressed
     def refresh_weather(self, *args):
         def refresh_weather(interval):
             
 
-            rain, formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
+            formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, x1, y1 = get_weather()
             Current_City = "Weather Info for City: " + "Chicago"
             Tdata = Show_Temp_Data(formattedktof_feelslike)
-            Wdata = Show_Water_data(humidity, z)
+            Wdata = Show_Water_data(humidity, x1, y1)
             Adata = Show_Air_data(formattedmbtoinhg, formattedkmhr, x, clouds)
             getDT = Get_Date_Time()
             T = formattedktof
@@ -109,7 +113,7 @@ class AWSApp(MDApp):
             # this will send the information to the arduino(Controller) via UDP cient
             # function variables format=> (Temperature);(Feels Like(temp));(Air pressure);(Humidity);(Wind direction);(Wind speed);(cloud percentage);(Precipitation(of the recent or near hour))
             # Currently only sending most needed Temperature, temp feals like, and precipitation
-            SendW_toCtr(formattedktof,formattedktof_feelslike, z )
+            SendW_toCtr(formattedktof,formattedktof_feelslike, y1 )
 
             # the function bellow will check the temperature
             # if the temperature is 20 degrees fahrenheit or bellow then the
@@ -127,23 +131,29 @@ class AWSApp(MDApp):
         Clock.schedule_once(refresh_weather, 1)
         Clock.schedule_interval(refresh_weather, 25*60)# the second input is for seconds
 
+
+
+
+
+
+
+
     # bellow this there will be variables used as functions inside the KV string that will
     # be used to build the apps main body
     #--------------------------------------
 
     # This will show the city the weather information is from
-    rain, formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z = get_weather()
+    formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, x1, y1 = get_weather()
     Current_City = "Weather Info for City: " + "Chicago"
     Tdata = Show_Temp_Data(formattedktof_feelslike)
-    Wdata = Show_Water_data(humidity, z)
+    Wdata = Show_Water_data(humidity, x1, y1)
     Adata = Show_Air_data(formattedmbtoinhg, formattedkmhr, x, clouds)
     getDT = Get_Date_Time()
     T = formattedktof
     CTemp = "\n" + T + "°" + "  F" + "\n"
     # End of variables used for functions
     #-----------------------------------
-    print(z)
-
+    Clock.schedule_interval(store_Data, 60)
 
 
 AWSApp().run()

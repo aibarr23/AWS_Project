@@ -98,7 +98,7 @@ void loop() {
 
   int packetSize = Udp.parsePacket();
 
-  if (packetSize) {
+  if (packetSize > 0) {
 
     Serial.print("Received packet of size ");
 
@@ -116,16 +116,13 @@ void loop() {
 
     // read the packet into packetBufffer
 
-    int len = Udp.read(packetBuffer, 255);
+    Udp.read(packetBuffer, 255);
+    String Data(packetBuffer);
+    
 
-    if (len > 0) {
-
-      packetBuffer[len] = 0;
-
-    }
     Serial.println("Contents:");
 
-    Serial.println(packetBuffer);
+    Serial.println(Data);
     // check what the packet's purpose
     // packet format: [5 characters;content-->](content are dividie by ";")(5 characters represents its reason)
     // 5 Characters types:
@@ -171,6 +168,7 @@ void loop() {
 
       Udp.endPacket();
       }
+    memset(packetBuffer, 0, 255); // clear out packetBuffer array
 
 void printWifiStatus() {
 
