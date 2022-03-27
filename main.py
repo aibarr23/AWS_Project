@@ -118,7 +118,7 @@ class AWSApp(MDApp):
             # the function bellow will check the temperature
             # if the temperature is 20 degrees fahrenheit or bellow then the
             # user will get a notification regarding the pvc pipes
-            if float(T) <= 20:
+            if float(formattedktof_feelslike) <= 20:
                 self.dialog = MDDialog(
                     title = "The temperature for today is bellow freezing point. Be sure to remove water from the system, If ambient temperature is bellow 20 F",
                     buttons = [
@@ -128,11 +128,16 @@ class AWSApp(MDApp):
                 self.dialog.open()
 
         # the following will runt the function once and run it again after given interval
-        Clock.schedule_once(refresh_weather, 1)
-        Clock.schedule_interval(refresh_weather, 25*60)# the second input is for seconds
-
-
-
+        event = Clock.schedule_once(refresh_weather, 1)
+        event()
+        
+        x = Clock.schedule_interval(event, 25*60)# the second input is for seconds
+        if(self.root.ids.AR):
+            x()
+            
+        else:
+            x.cancel()
+    
 
 
 

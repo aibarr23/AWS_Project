@@ -42,9 +42,18 @@ MDBoxLayout:
                     pos_hint: {"center_y": .5, "pos_hint_x": 0.5}
                     font_style: "H4"
 
-                    right_action_items: [["refresh", app.refresh_weather, "Refresh"]]
-                
                     
+                    right_action_items: [["refresh", app.refresh_weather, "Refresh"]]
+                    
+                    MDFlatButton:
+                        pos_hint: {"center_y": .5, "pos_hint_x":0.5}
+                        text: "auto-refresh"
+                        text_color: get_color_from_hex("#f3ab44")
+                        padding: [0,0,0,0]
+                    MDSwitch:
+                        id: AR
+                        pos_hint: {"center_y": .5, "pos_hint_x":0.5}
+                        tooltip_text: "auto-refresh"
                 
                 MDStackLayout:
                     ScrollView:
@@ -62,7 +71,8 @@ MDBoxLayout:
                             OneLineListItem:
                                 id: datetime
                                 text: app.getDT
-
+                            
+                                
                             MDCard:
                                 orientation: "vertical"
                                 size_hint: .5, None

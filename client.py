@@ -46,6 +46,8 @@ def store_Data(self):
             data_R = R_data[0].decode()
             data = time_recv + ": " + data_R + "\n"
             
+            #send data to app to update here
+            
             text_file = open("data.txt", "a")
             text_file.write(data)
             text_file.close()
