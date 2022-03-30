@@ -1,4 +1,3 @@
-#from socket import *
 import socket
 import time
 from datetime import datetime
