@@ -1,3 +1,4 @@
+
 from kivymd.app import MDApp
 from kivymd.uix.tab import MDTabsBase
 from kivymd.uix.floatlayout import MDFloatLayout
@@ -69,10 +70,13 @@ class AWSApp(MDApp):
         self.theme_cls.theme_style = "Light"# "Dark"
         self.theme_cls.primary_palette= "BlueGray"
         self.theme_cls.primary_hue = "900"
-
+        
         return Builder.load_string(KV)
 
     def on_start(self):
+        
+        # following statements will manage the solenoids by notigying arduino of changes
+        
         pass
 
     # this is for the button to change the theme_style of the app from light too dark
@@ -126,21 +130,25 @@ class AWSApp(MDApp):
                     ]
                 )
                 self.dialog.open()
+            
 
         # the following will runt the function once and run it again after given interval
         event = Clock.schedule_once(refresh_weather, 1)
+        x = Clock.schedule_interval(event, 10)# the second input is for seconds
         event()
         
-        x = Clock.schedule_interval(event, 25*60)# the second input is for seconds
-        if(self.root.ids.AR):
+        if(self.root.ids.AR.active==True):
             x()
-            
+            print("it is true now")
         else:
             x.cancel()
+            Clock.unschedule(x)
+            print("false")
     
-
-
-
+    # def fun(self):
+    #     if(self.root.ids.CA):
+    #         print("ddddd")
+    # Clock.schedule_once(fun, 1)
 
 
     # bellow this there will be variables used as functions inside the KV string that will
@@ -149,7 +157,7 @@ class AWSApp(MDApp):
 
     # This will show the city the weather information is from
     formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, x1, y1 = get_weather()
-    Current_City = "Weather Info for City: " + "Chicago"
+    Current_City = "Weather for City: " + "Chicago"
     Tdata = Show_Temp_Data(formattedktof_feelslike)
     Wdata = Show_Water_data(humidity, x1, y1)
     Adata = Show_Air_data(formattedmbtoinhg, formattedkmhr, x, clouds)

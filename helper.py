@@ -47,7 +47,7 @@ MDBoxLayout:
                     
                     MDFlatButton:
                         pos_hint: {"center_y": .5, "pos_hint_x":0.5}
-                        text: "auto-refresh"
+                        text: "auto-refresh->"
                         text_color: get_color_from_hex("#f3ab44")
                         padding: [0,0,0,0]
                     MDSwitch:
@@ -159,29 +159,65 @@ MDBoxLayout:
                     title: "System Status"
                     pos_hint: {"center_y": .5, "pos_hint_x": 0.5}
                     font_style: "H4"
+                    right_action_items: [["refresh", app.refresh_weather, "Return Control"]]
+                    
+                    MDFlatButton:
+                        pos_hint: {"center_y": .5, "pos_hint_x":0.5}
+                        text: "Close All->"
+                        text_color: get_color_from_hex("#f3ab44")
+                        padding: [0,0,0,0]
+                    MDSwitch:
+                        id: CA
+                        pos_hint: {"center_y": .5, "pos_hint_x":0.5}
 
                 MDStackLayout:
-
                     ScrollView:
                         pos_hint: {'center_x': .5}
                         adaptive_size: True
                         
+                        
                         MDList:
                             halign: "center"
-                            cols: 1
+                            cols: 2
                             rows: 5
                             spacing: "40dp"
-
                 
-
                             MDLabel:
-                                text: "Solenoid Status"
+                                text: "Solenoid"
                                 halign: "center"
                                 font_style: "H4"
                                 size_hint_y: None
                                 height: self.texture_size[1]
                                 pos_hint: {"center_y": .5}
-                            MDSeparator:
+                            MDLabel:
+                                text: "Status"
+                                halign: "center"
+                                font_style: "H4"
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                pos_hint: {"center_y": .5}
+                            MDLabel:
+                                text:"Solenoid #1"
+                                halign: "center"
+                                font_style: "H4"
+                            MDSwitch:
+                                id: S1
+                                pos_hint: {"center_y": .5, "pos_hint_x":0.5}
+                            
+                            MDLabel:
+                                text: "Solenoid #2"
+                                halign: "center"
+                                font_style: "H4"
+                            MDSwitch:
+                                id: S2
+                                pos_hint: {"center_y": .5, "pos_hint_x":5}
+                            MDLabel:
+                                text: "Solenoid #3"
+                                halign: "center"
+                                font_style: "H4"
+                            MDSwitch:
+                                id: S3
+                                pos_hint: {"center_y": .5, "pos_hint_x":5}
 
 
 
