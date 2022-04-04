@@ -13,7 +13,7 @@ from helper import KV
 # from Weather_data_collection import formattedktof, formattedktof_feelslike, formattedmbtoinhg, formattedkmhr, x, clouds
 # from Weather_data_collection import humidity, z
 from Weather_data_collection import get_weather
-from client import SendW_toCtr, store_Data
+from client import SendW_toCtr, store_Data, Return_control
 
 from datetime import datetime
 
@@ -67,7 +67,7 @@ def Get_Date_Time():
 class AWSApp(MDApp):
     
     def build(self):
-        self.theme_cls.theme_style = "Light"# "Dark"
+        self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette= "BlueGray"
         self.theme_cls.primary_hue = "900"
         
@@ -89,7 +89,22 @@ class AWSApp(MDApp):
         Clock.schedule_once(theme_style, 1)
 
 
-
+    # this function will return the control of the solenoids
+    # from user to the microcontroller(arduino) to continue automation
+    def Return_con(self, *args):
+        def Return_con(interval):
+            #return control
+            self.root.ids.S1.disabled = False
+            self.root.ids.S2.disabled = False
+            self.root.ids.S3.disabled = False
+            rec_data, response = Return_control()
+            if(response == "accepted"):
+                self.root.ids.S1.disabled = False
+                self.root.ids.S2.disabled = False
+                self.root.ids.S3.disabled = False
+                # have controller take control of solenoids
+                # here
+        Clock.schedule_once(Return_con,1)
 
 
     # this function is for the use of the refresh button

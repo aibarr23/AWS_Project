@@ -52,6 +52,7 @@ MDBoxLayout:
                         padding: [0,0,0,0]
                     MDSwitch:
                         id: AR
+                        on_press: app.refresh_weather()
                         pos_hint: {"center_y": .5, "pos_hint_x":0.5}
                         tooltip_text: "auto-refresh"
                 
@@ -159,7 +160,7 @@ MDBoxLayout:
                     title: "System Status"
                     pos_hint: {"center_y": .5, "pos_hint_x": 0.5}
                     font_style: "H4"
-                    right_action_items: [["refresh", app.refresh_weather, "Return Control"]]
+                    right_action_items: [["reply-circle", app.Return_con, "Return Control"]]
                     
                     MDFlatButton:
                         pos_hint: {"center_y": .5, "pos_hint_x":0.5}
@@ -168,6 +169,7 @@ MDBoxLayout:
                         padding: [0,0,0,0]
                     MDSwitch:
                         id: CA
+                        on_press: 
                         pos_hint: {"center_y": .5, "pos_hint_x":0.5}
 
                 MDStackLayout:
@@ -178,6 +180,7 @@ MDBoxLayout:
                         
                         MDList:
                             halign: "center"
+                            pos_hint: {'center_x': .5, 'center_y': .5}
                             cols: 2
                             rows: 5
                             spacing: "40dp"
@@ -202,6 +205,8 @@ MDBoxLayout:
                                 font_style: "H4"
                             MDSwitch:
                                 id: S1
+                                halign: "center"
+                                disabled: True
                                 pos_hint: {"center_y": .5, "pos_hint_x":0.5}
                             
                             MDLabel:
@@ -210,13 +215,15 @@ MDBoxLayout:
                                 font_style: "H4"
                             MDSwitch:
                                 id: S2
-                                pos_hint: {"center_y": .5, "pos_hint_x":5}
+                                disabled: True
+                                pos_hint: {'center_x': .7, 'center_y': .5}
                             MDLabel:
                                 text: "Solenoid #3"
                                 halign: "center"
                                 font_style: "H4"
                             MDSwitch:
                                 id: S3
+                                disabled: True
                                 pos_hint: {"center_y": .5, "pos_hint_x":5}
 
 

@@ -30,7 +30,27 @@ def SendW_toCtr(T, Tfl, Pre):
         
         time.sleep(2) #delay befor sending next command
         
+# this will send notify the controller that it has control again
+def Return_control():
+    data = "Return control"
+    while(1):
+        client_socket.sendto(data.encode(), address)
 
+        try:
+
+            rec_data, addr = client_socket.recvfrom(2048) # read response from arduino
+            #res = float(rec_data) #Convert string rec_data to float res(response)
+            print("Received response from:"+ addr)
+            print (rec_data)#print the result
+            x = "accepted"
+            return rec_data.decode(), str(x)
+        except:
+            print("Request timed out, could not send")
+            return "rejected", "denide"
+            break
+            #pass
+        
+        time.sleep(2) #delay befor sending next command
 
 # this loop will check for possible recieved packets
 def store_Data(self):
