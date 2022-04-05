@@ -18,7 +18,6 @@
 #include <WiFiUdp.h>
 
 int status = WL_IDLE_STATUS;
-#include "arduino_secrets.h"
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
 char ssid[] = SECRET_SSID;        // your network SSID (name)
 char pass[] = SECRET_PASS;    // your network password (use for WPA, or use as key for WEP)
@@ -83,7 +82,7 @@ void setup() {
 
   Serial.println("Connected to wifi");
 
-  printWifiStatus();
+  //printWifiStatus();
 
   Serial.println("\nStarting connection to server...");
 
@@ -129,29 +128,30 @@ void loop() {
     // WData: ; (this is for weather data) format-> Temperature;Feels like Temperature; Precipitation
     
     // Get the data type the is inside of the packetBuffer
-    int p = Data.find_first_of(";");
-    DataT = Data.substr(0, 5) // this takes out the Data type in the packet buffer
+    int p = Data.indexOf(";");
+    String DataT = Data.substring(0, 5); // this takes out the Data type in the packet buffer
     // Update microcontroller of weather data.
+  
     if(DataT == "WData") {
       //find first data value (Temperature)
-      int p2 = Data.find_first_of(";", p);
+      int p2 = Data.indexOf(";", p);
       p += 1;
       int s = p2 - p; // gives size of value
-      TempV = Data.substr(p, s);
+      String TempV = Data.substring(p, s);
 
       //find second data value(temp feeals like)
       p = p2;
-      p2 = Data.find_first_of(";",p);
+      p2 = Data.indexOf(";",p);
       p += 1;
       s = p2 - p;
-      Tempfl = Data.substr(p, s);
+      String Tempfl = Data.substring(p, s);
 
       //find final data value(precipitation)
       p = p2;
       p2 = Data.length();
       p += 1;
       s = p2 - p;
-      Prec = Data.substr(p, s);
+      String Prec = Data.substring(p, s);
 
       //
       // now send extracted data to its needed location
@@ -162,14 +162,16 @@ void loop() {
       // send a reply, to the IP address and port that sent us the packet we received
       Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
 
-      ReplyBuffer[] = "Weather Data Recieved"
+      // ReplyBuffer[] = "Weather Data Recieved"
 
       Udp.write(ReplyBuffer);
 
       Udp.endPacket();
       }
     memset(packetBuffer, 0, 255); // clear out packetBuffer array
-
+}
+}
+/*
 void printWifiStatus() {
 
   // print the SSID of the network you're attached to:
@@ -196,3 +198,4 @@ void printWifiStatus() {
 
   Serial.println(" dBm");
 }
+*/
