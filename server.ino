@@ -82,7 +82,7 @@ void setup() {
 
   Serial.println("Connected to wifi");
 
-  //printWifiStatus();
+  printWifiStatus();
 
   Serial.println("\nStarting connection to server...");
 
@@ -171,7 +171,7 @@ void loop() {
     memset(packetBuffer, 0, 255); // clear out packetBuffer array
 }
 }
-/*
+
 void printWifiStatus() {
 
   // print the SSID of the network you're attached to:
@@ -198,4 +198,3 @@ void printWifiStatus() {
 
   Serial.println(" dBm");
 }
-*/
