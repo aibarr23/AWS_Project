@@ -115,13 +115,14 @@ void loop() {
     Serial.println(Udp.remotePort());
 
     // read the packet into packetBufffer
+
     Udp.read(packetBuffer, 255);
     String Data(packetBuffer);
-
     
-    Serial.println("Contents:");
-    Serial.println(Data);
 
+    Serial.println("Contents:");
+
+    Serial.println(Data);
     // check what the packet's purpose
     // packet format: [5 characters;content-->](content are dividie by ";")(5 characters represents its reason)
     // 5 Characters types:
@@ -143,9 +144,10 @@ void loop() {
        // send a reply, to the IP address and port that sent us the packet we received
       Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
 
-      ReplyBuffer = String("store this data?");
+      String Buffer = "store this data?";
 
-      Udp.write(ReplyBuffer);
+      Udp.write(Buffer);
+
       Udp.endPacket();
       }
 
@@ -177,28 +179,40 @@ void loop() {
 
       // send a reply, to the IP address and port that sent us the packet we received
       Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
+
       // ReplyBuffer[] = "Weather Data Recieved"
+
       Udp.write(ReplyBuffer);
+
       Udp.endPacket();
       }
     memset(packetBuffer, 0, 255); // clear out packetBuffer array
-  }
+}
 }
 
 void printWifiStatus() {
 
   // print the SSID of the network you're attached to:
+
   Serial.print("SSID: ");
+
   Serial.println(WiFi.SSID());
 
   // print your board's IP address:
+
   IPAddress ip = WiFi.localIP();
+
   Serial.print("IP Address: ");
+
   Serial.println(ip);
 
   // print the received signal strength:
+
   long rssi = WiFi.RSSI();
+
   Serial.print("signal strength (RSSI):");
+
   Serial.print(rssi);
+
   Serial.println(" dBm");
 }
