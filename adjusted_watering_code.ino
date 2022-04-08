@@ -100,36 +100,36 @@ void loop() {
     sensorValue = readSoil();
     if (sensorValue <= thresholdDown) {
       digitalWrite(solenoidPin, HIGH); //open solenoid
-    delay(61000); //wait a minute and a second 
-    sensorValue = readSoil();
-    if (sensorValue <= thresholdDown) {
-      delay(60000); //wait a minute
-      digitalWrite(solenoidPin, LOW); //close solenoid
-      delay(1000);
+      delay(61000); //wait a minute and a second 
+      sensorValue = readSoil();
+      if (sensorValue <= thresholdDown) {
+        delay(60000); //wait a minute
+        digitalWrite(solenoidPin, LOW); //close solenoid
+        delay(1000);
+      }
+      else {
+        digitalWrite(solenoidPin, LOW); //close solenoid
+        delay(1000);
+      }
     }
-    else {
-      digitalWrite(solenoidPin, LOW); //close solenoid
-      delay(1000);
-    }
-  }
   }
   else {
     delay(18000000); //wait 30 min 
     sensorValue = readSoil();
     if (sensorValue <= thresholdDown) {
       digitalWrite(solenoidPin, HIGH); //open solenoid
-    delay(61000); //wait a minute and a second 
-    sensorValue = readSoil();
-    if (sensorValue <= thresholdDown) {
-      delay(60000); //wait a minute
-      digitalWrite(solenoidPin, LOW); //close solenoid
-      delay(1000);
+      delay(61000); //wait a minute and a second 
+      sensorValue = readSoil();
+      if (sensorValue <= thresholdDown) {
+        delay(60000); //wait a minute
+        digitalWrite(solenoidPin, LOW); //close solenoid
+        delay(1000);
+      }
+      else {
+        digitalWrite(solenoidPin, LOW); //close solenoid
+        delay(1000);
+      }
     }
-    else {
-      digitalWrite(solenoidPin, LOW); //close solenoid
-      delay(1000);
-    }
-  }
   }
 
   //POT TWO 
