@@ -51,7 +51,7 @@ def Return_control():
 
 # this will close all solenoids
 # so: stands for solenoid-> 0: all solenoids; 1: solenoid 1, etc.
-def CLASo(so):
+def CLASo(so, action):
     
     data = "CalSo;"# refers to clos all solenoids
     
@@ -68,12 +68,10 @@ def CLASo(so):
             return str(x)
         except:
             print("Request timed out, could not send")
-            return "rejected", "denide"
-        
-        
-        
-        
-        
+            return "denide"
+
+
+
 # this loop will check for possible recieved packets
 def store_Data(self):
     

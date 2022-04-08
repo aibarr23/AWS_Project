@@ -185,31 +185,51 @@ class AWSApp(MDApp):
             
             # change the states of solenoids to close(LOW)
             print("should close all solenoids")
-            resp = CLASo('0')
+            resp = CLASo('0', '0')
             # get response that it was successful
             if(resp == "success"):
                 self.root.ids.S1.active = False
                 self.root.ids.S2.active = False
                 self.root.ids.S3.active = False
-            
+        
         # when args is 1 means change solenoid 1 state
         elif(args[0] == '1'):
             
-            resp = CLASo('1')
-            if(resp == "success"):
-                self.root.ids.S1.active = True
+            # check solenoid current state then change it
+            if(self.root.ids.S1.active == False):
+                resp = CLASo('1', 'f')
+                if(resp == "success"):
+                    store_Data()# store data
+            else:
+                resp = CLASo('1', 't')
+                if(resp == "success"):
+                    store_Data()
+                    
         # when args is 2 means change solenoid 2 state
         elif(args[0] == '2'):
             
-            resp = CLASo('2')
-            if(resp == "success"):
-                self.root.ids.S2.active = True
+            # check solenoid current state then change it
+            if self.root.ids.S2.active == False:
+                resp = CLASo('2', 'f')
+                if(resp == "success"):
+                    store_Data()# store data
+            else:
+                resp = CLASo('2', 't')
+                if(resp == "success"):
+                    store_Data()
+                    
         # when args is 3 means change solenoid 3 state
         elif(args[0] == '3'):
             
-            resp = CLASo('3')
-            if(resp == "success"):
-                self.root.ids.S3.active = True
+            # check solenoid current state then change it
+            if self.root.ids.S3.active == False:
+                resp = CLASo('3', 'f')
+                if(resp == "success"):
+                    store_Data()# store data
+            else:
+                resp = CLASo('3', 't')
+                if(resp == "success"):
+                    store_Data()
         
         
         
