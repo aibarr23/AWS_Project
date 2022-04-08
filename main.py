@@ -182,6 +182,10 @@ class AWSApp(MDApp):
     # End of variables used for functions
     #-----------------------------------
     Clock.schedule_interval(store_Data, 60)
+    
+    # this should check for incoming packets from the arduino server
+    # regarding update for the UI
+    # Clock.schedule_interval(())
 
 
 AWSApp().run()

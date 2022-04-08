@@ -16,6 +16,7 @@
 #include <SPI.h>
 #include <WiFiNINA.h>
 #include <WiFiUdp.h>
+#include <adjusted_watering_code.ino>
 
 int status = WL_IDLE_STATUS;
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
@@ -114,14 +115,13 @@ void loop() {
     Serial.println(Udp.remotePort());
 
     // read the packet into packetBufffer
-
     Udp.read(packetBuffer, 255);
     String Data(packetBuffer);
+
     
-
     Serial.println("Contents:");
-
     Serial.println(Data);
+
     // check what the packet's purpose
     // packet format: [5 characters;content-->](content are dividie by ";")(5 characters represents its reason)
     // 5 Characters types:
@@ -131,14 +131,30 @@ void loop() {
     int p = Data.indexOf(";");
     String DataT = Data.substring(0, 5); // this takes out the Data type in the packet buffer
     // Update microcontroller of weather data.
-  
+
+    //this will send data to client
+    if(DataT == "SData"){
+      //collect data from controller
+      // collect Solenoid status
+      digitalRead(solenoidPin);
+      // collect moisture levels
+
+      // test
+       // send a reply, to the IP address and port that sent us the packet we received
+      Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
+
+      ReplyBuffer = String("store this data?");
+
+      Udp.write(ReplyBuffer);
+      Udp.endPacket();
+      }
+
     if(DataT == "WData") {
       //find first data value (Temperature)
       int p2 = Data.indexOf(";", p);
       p += 1;
       int s = p2 - p; // gives size of value
       String TempV = Data.substring(p, s);
-
       //find second data value(temp feeals like)
       p = p2;
       p2 = Data.indexOf(";",p);
@@ -161,40 +177,28 @@ void loop() {
 
       // send a reply, to the IP address and port that sent us the packet we received
       Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
-
       // ReplyBuffer[] = "Weather Data Recieved"
-
       Udp.write(ReplyBuffer);
-
       Udp.endPacket();
       }
     memset(packetBuffer, 0, 255); // clear out packetBuffer array
-}
+  }
 }
 
 void printWifiStatus() {
 
   // print the SSID of the network you're attached to:
-
   Serial.print("SSID: ");
-
   Serial.println(WiFi.SSID());
 
   // print your board's IP address:
-
   IPAddress ip = WiFi.localIP();
-
   Serial.print("IP Address: ");
-
   Serial.println(ip);
 
   // print the received signal strength:
-
   long rssi = WiFi.RSSI();
-
   Serial.print("signal strength (RSSI):");
-
   Serial.print(rssi);
-
   Serial.println(" dBm");
 }

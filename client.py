@@ -2,7 +2,7 @@ import socket
 import time
 from datetime import datetime
 
-address = ('127.0.0.1', 5000) #define server IP and port
+address = ('10.0.0.56', 2390) #define server IP and port
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #set op the socket
 client_socket.settimeout(1) # Only wait 1 second for a response
    
@@ -55,9 +55,16 @@ def Return_control():
 # this loop will check for possible recieved packets
 def store_Data(self):
     
+    data = "SData"
+    
+    client_socket.sendto(data.encode(), address)
     try:
         R_data, addr = client_socket.recvfrom(1024) # read response
         time_recv = datetime.now()
+        
+        # test
+        print(R_data.decode())
+        print(time_recv)
         
         # get data and store it in text file for future analysis
         if(R_data[0].decode().size() > 0):
