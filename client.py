@@ -18,7 +18,7 @@ def SendW_toCtr(T, Tfl, Pre):
         client_socket.sendto(data.encode(), address)
 
         try:
-
+            
             rec_data, addr = client_socket.recvfrom(2048) # read response from arduino
             #res = float(rec_data) #Convert string rec_data to float res(response)
             print("Received response from:"+ addr)
@@ -29,7 +29,9 @@ def SendW_toCtr(T, Tfl, Pre):
             #pass
         
         time.sleep(2) #delay befor sending next command
-        
+
+
+
 # this will send notify the controller that it has control again
 def Return_control():
     data = "Rcntr;"# Rcntr stands for Return control
@@ -49,8 +51,12 @@ def Return_control():
             return "rejected", "denide"
         
 
+
+
+
 # this will close all solenoids
 # so: stands for solenoid-> 0: all solenoids; 1: solenoid 1, etc.
+# action: c: close; o: open
 def CLASo(so, action):
     
     data = "CalSo;"# refers to clos all solenoids
@@ -82,20 +88,35 @@ def store_Data(self):
         R_data, addr = client_socket.recvfrom(1024) # read response
         time_recv = datetime.now()
         
-        # test
+        # test store data function
         print(R_data.decode())
         print(time_recv)
         
         # get data and store it in text file for future analysis
-        if(R_data[0].decode().size() > 0):
-            
-            data_R = R_data[0].decode()
-            data = time_recv + ": " + data_R + "\n"
-            
-            #send data to app to update here
-            
-            text_file = open("data.txt", "a")
-            text_file.write(data)
-            text_file.close()
+        S_data(R_data)
+        
     except:
         pass
+    
+
+# this is the function that will store the data into a file
+def S_data(R_data):
+    
+    sD = ""
+    time_recv = datetime.now()
+    
+    if(R_data.type() == bytes.type()):
+        sD = R_data.decode()
+    else:
+        sD = R_data
+        
+    if(sD.size() > 0):
+            
+        data_R = R_data[0].decode()
+        data = time_recv + ": " + data_R + "\n"
+        
+        #send data to app to update here
+        
+        text_file = open("data.txt", "a")
+        text_file.write(data)
+        text_file.close()

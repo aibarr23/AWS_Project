@@ -24,7 +24,7 @@ from helper import KV
 # from Weather_data_collection import formattedktof, formattedktof_feelslike, formattedmbtoinhg, formattedkmhr, x, clouds
 # from Weather_data_collection import humidity, z
 from Weather_data_collection import get_weather
-from client import SendW_toCtr, store_Data, Return_control, CLASo
+from client import SendW_toCtr, store_Data, S_data, Return_control, CLASo
 
 from datetime import datetime
 
@@ -104,10 +104,12 @@ class AWSApp(MDApp):
     # from user to the microcontroller(arduino) to continue automation
     def Return_con(self, *args):
         def Return_con(interval):
+            
             #return control
             self.root.ids.S1.disabled = False
             self.root.ids.S2.disabled = False
             self.root.ids.S3.disabled = False
+            
             # obtain respones and data regarding solenoids state(rec_data)
             rec_data, response = Return_control()
             if(response == "accepted"):
@@ -197,24 +199,24 @@ class AWSApp(MDApp):
             
             # check solenoid current state then change it
             if(self.root.ids.S1.active == False):
-                resp = CLASo('1', 'f')
+                resp = CLASo('1', 'o')
                 if(resp == "success"):
-                    store_Data()# store data
+                    S_data("S1, closed")# store data
             else:
-                resp = CLASo('1', 't')
+                resp = CLASo('1', 'c')
                 if(resp == "success"):
-                    store_Data()
+                    S_data()
                     
         # when args is 2 means change solenoid 2 state
         elif(args[0] == '2'):
             
             # check solenoid current state then change it
             if self.root.ids.S2.active == False:
-                resp = CLASo('2', 'f')
+                resp = CLASo('2', 'o')
                 if(resp == "success"):
                     store_Data()# store data
             else:
-                resp = CLASo('2', 't')
+                resp = CLASo('2', 'c')
                 if(resp == "success"):
                     store_Data()
                     
@@ -223,11 +225,11 @@ class AWSApp(MDApp):
             
             # check solenoid current state then change it
             if self.root.ids.S3.active == False:
-                resp = CLASo('3', 'f')
+                resp = CLASo('3', 'o')
                 if(resp == "success"):
                     store_Data()# store data
             else:
-                resp = CLASo('3', 't')
+                resp = CLASo('3', 'c')
                 if(resp == "success"):
                     store_Data()
         

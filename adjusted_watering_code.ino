@@ -88,9 +88,9 @@ void loop() {
   sensorValue2 = readSoil2();
   
   if (returnControl == True) { //user returns control to solenoids
-  solenoidControl0 = False; // user is not controlling solenoid0
-  solenoidControl1 = False; // user is not controlling solenoid1   
-  solenoidControl2 = False; // user is not controlling solenoid2
+    solenoidControl0 = False; // user is not controlling solenoid0
+    solenoidControl1 = False; // user is not controlling solenoid1   
+    solenoidControl2 = False; // user is not controlling solenoid2
   }
   
   if (solenoidControl0 == False) {
@@ -129,15 +129,15 @@ int wateringPot (int sensorvalue, int solenoidPin) { //what do i refer to high/l
       digitalWrite(solenoidPin, HIGH); //open solenoid
       delay(61000); //wait a minute and a second 
       sensorValue = readSoil();
-    if (sensorValue <= thresholdDown) {
-      delay(60000); //wait a minute
-      digitalWrite(solenoidPin, LOW); //close solenoid
-      delay(1000);
-    }
-    else {
-      digitalWrite(solenoidPin, LOW); //close solenoid
-      delay(1000);
-    }
+      if (sensorValue <= thresholdDown) {
+        delay(60000); //wait a minute
+        digitalWrite(solenoidPin, LOW); //close solenoid
+        delay(1000);
+      }
+      else {
+        digitalWrite(solenoidPin, LOW); //close solenoid
+        delay(1000);
+      }
     }
   }
   else {
@@ -147,37 +147,40 @@ int wateringPot (int sensorvalue, int solenoidPin) { //what do i refer to high/l
       digitalWrite(solenoidPin, HIGH); //open solenoid
       delay(61000); //wait a minute and a second 
       sensorValue = readSoil();
-    if (sensorValue <= thresholdDown) {
-      delay(60000); //wait a minute
-      digitalWrite(solenoidPin, LOW); //close solenoid
-      delay(1000);
-    }
-  else {
-    digitalWrite(solenoidPin, LOW); //close solenoid
-    delay(1000);
-  }
+      if (sensorValue <= thresholdDown) {
+        delay(60000); //wait a minute
+        digitalWrite(solenoidPin, LOW); //close solenoid
+        delay(1000);
+      }
+      else {
+        digitalWrite(solenoidPin, LOW); //close solenoid
+        delay(1000);
+      }
     }
   }
 }
 
-int solenoids(bool solenoidControl, bool solenoidControlopenclose) {
-  if (solenoidControl == True) { //user interacts with solenoid0 switch
-    if (solenoidControlopenclose == True) { //user opens solenoid
-      digitalWrite(solenoidPin, HIGH);
-    }
-    else if (solenoidcontrol == False){ //close solenoid when it is open
-      digitalWrite(solenoidPin, LOW);
-    }
-    else {
-      continue;
-    }
-  }
-  
-  if (closeAll == True) { //closing all solenoids, microcontrller is still not in control
+void solenoids(bool solenoidControl, bool solenoidControlopenclose, int So) {
+
+  int solenoids = [0, 10, 11. 12];
+
+  if (solenoids[So] == 0) { //closing all solenoids, microcontrller is still not in control
     digitalWrite(solenoidPin, HIGH);
     digitalWrite(solenoidPin1, HIGH);
     digitalWrite(solenoidPin2, HIGH);
   }
+  else{
+    if (solenoidControl == True) { //user interacts with solenoid0 switch
+      if (solenoidControlopenclose == True) { //user opens solenoid
+        digitalWrite(solenoids[So], HIGH);
+      }
+      else if (solenoidcontrol == False){ //close solenoid when it is open
+        digitalWrite(solenoids[So], LOW);
+      }
+    }
+  }
+  
+  
 }  
 
 int readSoil()
