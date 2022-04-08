@@ -92,7 +92,6 @@ void setup() {
 }
 
 void loop() {
-
   // if there's data available, read a packet
 
   int packetSize = Udp.parsePacket();
@@ -131,7 +130,16 @@ void loop() {
     int p = Data.indexOf(";");
     String DataT = Data.substring(0, 5); // this takes out the Data type in the packet buffer
     // Update microcontroller of weather data.
-  
+    
+    if(DataT == "SData"){
+    //digitalRead(solenoidPin);
+    Udp.begin(Udp.remoteIP());
+    Udp.beginPacket(Udp.remoteIP(),Udp.remotePort());
+    String ReplyBuffer = "store this data?";
+    //Udp.write(buffer(),size());
+    Udp.endPacket();
+    }
+    
     if(DataT == "WData") {
       //find first data value (Temperature)
       int p2 = Data.indexOf(";", p);
@@ -169,6 +177,7 @@ void loop() {
       Udp.endPacket();
       }
     memset(packetBuffer, 0, 255); // clear out packetBuffer array
+    
 }
 }
 
@@ -197,4 +206,7 @@ void printWifiStatus() {
   Serial.print(rssi);
 
   Serial.println(" dBm");
+
 }
+
+
