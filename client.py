@@ -32,7 +32,7 @@ def SendW_toCtr(T, Tfl, Pre):
         
 # this will send notify the controller that it has control again
 def Return_control():
-    data = "Return control"
+    data = "Rcntr;"# Rcntr stands for Return control
     while(1):
         client_socket.sendto(data.encode(), address)
 
@@ -47,17 +47,39 @@ def Return_control():
         except:
             print("Request timed out, could not send")
             return "rejected", "denide"
-            break
-            #pass
         
-        time.sleep(2) #delay befor sending next command
 
+# this will close all solenoids
+# so: stands for solenoid-> 0: all solenoids; 1: solenoid 1, etc.
+def CLASo(so):
+    
+    data = "CalSo;"# refers to clos all solenoids
+    
+    while(1):
+        client_socket.sendto(data.encode(), address)
+
+        try:
+
+            rec_data, addr = client_socket.recvfrom(2048) # read response from arduino
+            #res = float(rec_data) #Convert string rec_data to float res(response)
+            print("Received response from:"+ addr)
+            print (rec_data)#print the result
+            x = "success"
+            return str(x)
+        except:
+            print("Request timed out, could not send")
+            return "rejected", "denide"
+        
+        
+        
+        
+        
 # this loop will check for possible recieved packets
 def store_Data(self):
     
     data = "SData"
     
-    client_socket.sendto(data.encode(), address)
+    # client_socket.sendto(data.encode(), address)
     try:
         R_data, addr = client_socket.recvfrom(1024) # read response
         time_recv = datetime.now()

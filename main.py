@@ -1,4 +1,15 @@
+'''
+Filename: main.py
 
+Description:
+    File is used for the Kivymd framework to run the aplications functionality
+    
+Author 1: Anthony Ibarra, 28aibarra@gmail.com
+Author 2: Joe Biscan
+    
+Date: Spring 2022
+
+'''
 from kivymd.app import MDApp
 from kivymd.uix.tab import MDTabsBase
 from kivymd.uix.floatlayout import MDFloatLayout
@@ -13,7 +24,7 @@ from helper import KV
 # from Weather_data_collection import formattedktof, formattedktof_feelslike, formattedmbtoinhg, formattedkmhr, x, clouds
 # from Weather_data_collection import humidity, z
 from Weather_data_collection import get_weather
-from client import SendW_toCtr, store_Data, Return_control
+from client import SendW_toCtr, store_Data, Return_control, CLASo
 
 from datetime import datetime
 
@@ -97,6 +108,7 @@ class AWSApp(MDApp):
             self.root.ids.S1.disabled = False
             self.root.ids.S2.disabled = False
             self.root.ids.S3.disabled = False
+            # obtain respones and data regarding solenoids state(rec_data)
             rec_data, response = Return_control()
             if(response == "accepted"):
                 self.root.ids.S1.disabled = False
@@ -109,7 +121,7 @@ class AWSApp(MDApp):
 
     # this function is for the use of the refresh button
     # will refresh the weather information every time it is pressed
-    def refresh_weather(self, *args):
+    def refresh_weather(self,*args):
         def refresh_weather(interval):
             
 
@@ -152,18 +164,55 @@ class AWSApp(MDApp):
         x = Clock.schedule_interval(event, 10)# the second input is for seconds
         event()
         
-        if(self.root.ids.AR.active==True):
-            x()
-            print("it is true now")
+        if( args[0] == 's'):
+            if(self.root.ids.AR.active== False):
+                x()
+                print("it is true now")
         else:
             x.cancel()
             Clock.unschedule(x)
             print("false")
     
-    # def fun(self):
-    #     if(self.root.ids.CA):
-    #         print("ddddd")
-    # Clock.schedule_once(fun, 1)
+    
+    # function is called to close all solenoids that are open
+    # and takes control from arduino to prevent overwriting
+    def close_sol(self, *args):
+        print(*args)
+        
+        # when args is 0 means to close all solenoids
+        if(args[0] == '0'):
+            # take control of all three solenoids
+            
+            # change the states of solenoids to close(LOW)
+            print("should close all solenoids")
+            resp = CLASo('0')
+            # get response that it was successful
+            if(resp == "success"):
+                self.root.ids.S1.active = False
+                self.root.ids.S2.active = False
+                self.root.ids.S3.active = False
+            
+        # when args is 1 means change solenoid 1 state
+        elif(args[0] == '1'):
+            
+            resp = CLASo('1')
+            if(resp == "success"):
+                self.root.ids.S1.active = True
+        # when args is 2 means change solenoid 2 state
+        elif(args[0] == '2'):
+            
+            resp = CLASo('2')
+            if(resp == "success"):
+                self.root.ids.S2.active = True
+        # when args is 3 means change solenoid 3 state
+        elif(args[0] == '3'):
+            
+            resp = CLASo('3')
+            if(resp == "success"):
+                self.root.ids.S3.active = True
+        
+        
+        
 
 
     # bellow this there will be variables used as functions inside the KV string that will

@@ -52,7 +52,7 @@ MDBoxLayout:
                         padding: [0,0,0,0]
                     MDSwitch:
                         id: AR
-                        on_press: app.refresh_weather()
+                        on_press: app.refresh_weather('s')
                         pos_hint: {"center_y": .5, "pos_hint_x":0.5}
                         tooltip_text: "auto-refresh"
                 
@@ -167,9 +167,11 @@ MDBoxLayout:
                         text: "Close All->"
                         text_color: get_color_from_hex("#f3ab44")
                         padding: [0,0,0,0]
-                    MDSwitch:
+                    MDIconButton:
                         id: CA
-                        on_press: 
+                        icon: "water-pump-off"
+                        tooltip_text: "Close All"
+                        on_press: app.close_sol('0')
                         pos_hint: {"center_y": .5, "pos_hint_x":0.5}
 
                 MDStackLayout:
@@ -206,6 +208,7 @@ MDBoxLayout:
                             MDSwitch:
                                 id: S1
                                 halign: "center"
+                                on_press: app.close_sol('1')
                                 disabled: True
                                 pos_hint: {"center_y": .5, "pos_hint_x":0.5}
                             
@@ -215,6 +218,7 @@ MDBoxLayout:
                                 font_style: "H4"
                             MDSwitch:
                                 id: S2
+                                on_press: app.close_sol('2')
                                 disabled: True
                                 pos_hint: {'center_x': .7, 'center_y': .5}
                             MDLabel:
@@ -223,6 +227,7 @@ MDBoxLayout:
                                 font_style: "H4"
                             MDSwitch:
                                 id: S3
+                                on_press: app.close_sol('3')
                                 disabled: True
                                 pos_hint: {"center_y": .5, "pos_hint_x":5}
 

@@ -27,7 +27,7 @@ int keyIndex = 0;            // your network key Index number (needed only for W
 unsigned int localPort = 2390;      // local port to listen on
 
 char packetBuffer[256]; //buffer to hold incoming packet
-char  ReplyBuffer[] = "acknowledged";       // a string to send back
+char ReplyBuffer[] = "acknowledged"; // a string to send back
 
 WiFiUDP Udp;
 
@@ -50,7 +50,6 @@ void setup() {
     Serial.println("Communication with WiFi module failed!");
 
     // don't continue
-
     while (true);
 
   }
@@ -68,71 +67,57 @@ void setup() {
   while (status != WL_CONNECTED) {
 
     Serial.print("Attempting to connect to SSID: ");
-
     Serial.println(ssid);
 
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-
     status = WiFi.begin(ssid, pass);
 
     // wait 10 seconds for connection:
-
     delay(10000);
 
   }
 
   Serial.println("Connected to wifi");
-
   printWifiStatus();
-
   Serial.println("\nStarting connection to server...");
 
   // if you get a connection, report back via serial:
-
   Udp.begin(localPort);
 }
 
 void loop() {
 
   // if there's data available, read a packet
-
   int packetSize = Udp.parsePacket();
 
   if (packetSize > 0) {
 
     Serial.print("Received packet of size ");
-
     Serial.println(packetSize);
-
     Serial.print("From ");
-
     IPAddress remoteIp = Udp.remoteIP();
-
     Serial.print(remoteIp);
-
     Serial.print(", port ");
-
     Serial.println(Udp.remotePort());
 
     // read the packet into packetBufffer
-
     Udp.read(packetBuffer, 255);
     String Data(packetBuffer);
-    
-
     Serial.println("Contents:");
-
     Serial.println(Data);
+
+    //
     // check what the packet's purpose
     // packet format: [5 characters;content-->](content are dividie by ";")(5 characters represents its reason)
     // 5 Characters types:
     // WData: ; (this is for weather data) format-> Temperature;Feels like Temperature; Precipitation
-    
+    //
+
+
     // Get the data type the is inside of the packetBuffer
     int p = Data.indexOf(";");
     String DataT = Data.substring(0, 5); // this takes out the Data type in the packet buffer
-    // Update microcontroller of weather data.
-
+    
     //this will send data to client
     if(DataT == "SData"){
       //collect data from controller
@@ -143,20 +128,21 @@ void loop() {
       // test
        // send a reply, to the IP address and port that sent us the packet we received
       Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
-
-      String Buffer = "store this data?";
-
-      Udp.write(Buffer);
-
+      ReplyBuffer = "store this data?";
+      Udp.write(ReplyBuffer);
       Udp.endPacket();
-      }
 
+    }
+
+    // Update microcontroller of weather data.
     if(DataT == "WData") {
+
       //find first data value (Temperature)
       int p2 = Data.indexOf(";", p);
       p += 1;
       int s = p2 - p; // gives size of value
       String TempV = Data.substring(p, s);
+
       //find second data value(temp feeals like)
       p = p2;
       p2 = Data.indexOf(";",p);
@@ -179,40 +165,29 @@ void loop() {
 
       // send a reply, to the IP address and port that sent us the packet we received
       Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
-
-      // ReplyBuffer[] = "Weather Data Recieved"
-
       Udp.write(ReplyBuffer);
-
       Udp.endPacket();
-      }
+
+    }
     memset(packetBuffer, 0, 255); // clear out packetBuffer array
-}
+  }
 }
 
 void printWifiStatus() {
 
   // print the SSID of the network you're attached to:
-
   Serial.print("SSID: ");
-
   Serial.println(WiFi.SSID());
 
   // print your board's IP address:
-
   IPAddress ip = WiFi.localIP();
-
   Serial.print("IP Address: ");
-
   Serial.println(ip);
 
   // print the received signal strength:
-
   long rssi = WiFi.RSSI();
-
   Serial.print("signal strength (RSSI):");
-
   Serial.print(rssi);
-
   Serial.println(" dBm");
+
 }
