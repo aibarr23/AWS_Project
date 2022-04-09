@@ -301,7 +301,7 @@ MDBoxLayout:
 
                                 SmartTileWithLabel:
                                     source: "plant1.jpg"
-                                    text: "[size=26]--Plant Name-- 1[/size]"
+                                    text: "[size=26]Plectranthus Venteri in Experiment[/size]"
                                     allow_stretch: True
                                     keep_ratio: True
 
