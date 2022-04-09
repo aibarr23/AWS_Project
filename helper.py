@@ -274,7 +274,7 @@ MDBoxLayout:
                                 orientation: "vertical"
                                 size_hint: .5, None
                                 height: "300dp"
-                       
+
                                 padding: 30, 30, 30, 30
                                 bg_light:
                                 elevation: 20
@@ -305,7 +305,7 @@ MDBoxLayout:
                                     allow_stretch: True
                                     keep_ratio: True
 
-                                                  
+                            
                             MDCard:
                                 orientation: "vertical"
                                 size_hint: .5, None

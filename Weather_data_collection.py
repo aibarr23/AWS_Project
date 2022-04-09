@@ -9,11 +9,11 @@ from pyowm.owm import OWM
 def get_weather():
     # global formattedktof,formattedktof_feelslike, formattedmbtoinhg, humidity, x, formattedkmhr, clouds, z
     #gathering data from apikey
-    owm=OWM('d4adacdab2c752357183aaafdb017bbb')                  
+    owm=OWM('d4adacdab2c752357183aaafdb017bbb')
     mgr = owm.weather_manager()
     Weather = mgr.weather_at_place("Chicago")
     Data = Weather.weather
-   
+
     #gathering data and printing result
     temp=Data.temp
     pressure=Data.pressure
@@ -59,7 +59,7 @@ def get_weather():
     #printing out all the data
     print(f"Temperature: {formattedktof}F")
     print(f"Feels like: {formattedktof_feelslike}F")
-    print(f"Pressure: {formattedmbtoinhg}inHg") 
+    print(f"Pressure: {formattedmbtoinhg}inHg")
     print(f"Humidity: {humidity}%")
     print(f"Wind conditions: {x} winds at {formattedkmhr}km/hr")
     print(f"Cloud cover: {clouds}%")
@@ -67,7 +67,7 @@ def get_weather():
 
 
     '''
-    Web scraping starts here. 
+    Web scraping starts here.
     It is separate from the openweathermap api data.
     '''
     from requests_html import HTMLSession, HTML
@@ -90,7 +90,7 @@ def get_weather():
     
     x1 = r.html.find('div.DetailsSummary--DetailsSummary--2HluQ h2.DetailsSummary--daypartName--2FBp2', first=True).text
     print(x1)
-    y1 = r.html.find('div.DetailsSummary--precip--1ecIJ span', first=True).text   
+    y1 = r.html.find('div.DetailsSummary--precip--1ecIJ span', first=True).text
     print(y1)
     print("\n")
     # z = x1+"\n"+y1
@@ -103,9 +103,9 @@ def get_precipitation(location:str, hrs:list):
     import requests
     url = "https://il.water.usgs.gov/gmaps/precip/data/rainfall_outIL_WSr2.json"
     r = requests.get('https://il.water.usgs.gov/gmaps/precip/data/rainfall_outIL_WSr2.json').json()
-   
+
     #searching for data in json file
-    data = [i for i in r['value']['items'] if i['title'] == location][0] 
+    data = [i for i in r['value']['items'] if i['title'] == location][0]
     
     #printing out data gathered from json file
     for k,v in data.items():

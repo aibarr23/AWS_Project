@@ -5,7 +5,7 @@ from datetime import datetime
 address = ('10.0.0.56', 2390) #define server IP and port
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #set op the socket
 client_socket.settimeout(1) # Only wait 1 second for a response
-   
+
 # this will send the information to the arduino(Controller) via UDP cient
 # function variables format=> (Temperature);(Feels Like(temp));(Air pressure);(Humidity);(Wind direction);(Wind speed);(cloud percentage);(Precipitation(of the recent or near hour))
 # Currently only sending most needed Temperature, temp feals like, and precipitation
@@ -105,15 +105,14 @@ def S_data(R_data):
     sD = ""
     time_recv = datetime.now()
     
-    if(R_data.type() == bytes.type()):
-        sD = R_data.decode()
+    if(type(R_data) == bytes):
+        sD = str(R_data.decode())
     else:
         sD = R_data
         
-    if(sD.size() > 0):
+    if(len(sD) > 0):
             
-        data_R = R_data[0].decode()
-        data = time_recv + ": " + data_R + "\n"
+        data = time_recv.strftime(" %d/%m/%Y %H:%M:%S\n") + ": " + sD + "\n"
         
         #send data to app to update here
         

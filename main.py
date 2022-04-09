@@ -201,11 +201,13 @@ class AWSApp(MDApp):
             if(self.root.ids.S1.active == False):
                 resp = CLASo('1', 'o')
                 if(resp == "success"):
-                    S_data("S1, closed")# store data
+                    S_data("S1, opened")# store data
+                    self.root.ids.S1.active = True
             else:
                 resp = CLASo('1', 'c')
                 if(resp == "success"):
-                    S_data()
+                    S_data("S1, closed")
+                    self.root.ids.S1.active = False
                     
         # when args is 2 means change solenoid 2 state
         elif(args[0] == '2'):
@@ -214,11 +216,13 @@ class AWSApp(MDApp):
             if self.root.ids.S2.active == False:
                 resp = CLASo('2', 'o')
                 if(resp == "success"):
-                    store_Data()# store data
+                    S_data("S2, opened")# store data
+                    self.root.ids.S2.active = True
             else:
                 resp = CLASo('2', 'c')
                 if(resp == "success"):
-                    store_Data()
+                    S_data("S2, closed")
+                    self.root.ids.S2.active = False
                     
         # when args is 3 means change solenoid 3 state
         elif(args[0] == '3'):
@@ -227,11 +231,13 @@ class AWSApp(MDApp):
             if self.root.ids.S3.active == False:
                 resp = CLASo('3', 'o')
                 if(resp == "success"):
-                    store_Data()# store data
+                    S_data("S3, opened")# store data
+                    self.root.ids.S3.active = True
             else:
                 resp = CLASo('3', 'c')
                 if(resp == "success"):
-                    store_Data()
+                    S_data("S3, closed")
+                    self.root.ids.S3.active = False
         
         
         

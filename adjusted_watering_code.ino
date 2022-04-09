@@ -5,9 +5,9 @@
 Uart mySerial (&sercom0, 13, 8, SERCOM_RX_PAD_1, UART_TX_PAD_0);
 
 
-// Here we are setting up some water thersholds that we will 
+// Here we are setting up some water thersholds that we will
 // use later. Note that you will need to change these to match
-// your soil type and environment. 
+// your soil type and environment.
 
 /********************************************************
  * Change these values based on your calibration values
@@ -26,7 +26,7 @@ int soilPin1 = A1;
 int soilPin2 = A2;
 int soilPower = 7;
 int soilPower1 = 8;
-int soilPower2 = 9;  
+int soilPower2 = 9;
 
 boolean solenoidControl0 == False; // user is not controlling solenoid0
 boolean solenoidControl1 == False; // user is not controlling solenoid1
@@ -89,7 +89,7 @@ void loop() {
   
   if (returnControl == True) { //user returns control to solenoids
     solenoidControl0 = False; // user is not controlling solenoid0
-    solenoidControl1 = False; // user is not controlling solenoid1   
+    solenoidControl1 = False; // user is not controlling solenoid1
     solenoidControl2 = False; // user is not controlling solenoid2
   }
   
@@ -109,7 +109,7 @@ int wateringPot (int sensorvalue, int solenoidPin) { //what do i refer to high/l
   if (sensorValue <= thresholdDown) {
     //water it
     digitalWrite(solenoidPin, HIGH); //open solenoid
-    delay(61000); //wait a minute and a second 
+    delay(61000); //wait a minute and a second
     sensorValue = readSoil();
     if (sensorValue <= thresholdDown) {
       delay(60000); //wait a minute
@@ -122,12 +122,12 @@ int wateringPot (int sensorvalue, int solenoidPin) { //what do i refer to high/l
     }
   }
   else if (sensorValue >= thresholdUp) {
-    //wait and check later 
+    //wait and check later
     delay(36000000); //wait an hour
     sensorValue = readSoil();
     if (sensorValue <= thresholdDown) {
       digitalWrite(solenoidPin, HIGH); //open solenoid
-      delay(61000); //wait a minute and a second 
+      delay(61000); //wait a minute and a second
       sensorValue = readSoil();
       if (sensorValue <= thresholdDown) {
         delay(60000); //wait a minute
@@ -141,11 +141,11 @@ int wateringPot (int sensorvalue, int solenoidPin) { //what do i refer to high/l
     }
   }
   else {
-    delay(18000000); //wait 30 min 
+    delay(18000000); //wait 30 min
     sensorValue = readSoil();
     if (sensorValue <= thresholdDown) {
       digitalWrite(solenoidPin, HIGH); //open solenoid
-      delay(61000); //wait a minute and a second 
+      delay(61000); //wait a minute and a second
       sensorValue = readSoil();
       if (sensorValue <= thresholdDown) {
         delay(60000); //wait a minute
@@ -162,7 +162,7 @@ int wateringPot (int sensorvalue, int solenoidPin) { //what do i refer to high/l
 
 void solenoids(bool solenoidControl, bool solenoidControlopenclose, int So) {
 
-  int solenoids = [0, 10, 11. 12];
+  int solenoids[] = {0, 10, 11. 12};
 
   if (solenoids[So] == 0) { //closing all solenoids, microcontrller is still not in control
     digitalWrite(solenoidPin, HIGH);
@@ -181,30 +181,30 @@ void solenoids(bool solenoidControl, bool solenoidControlopenclose, int So) {
   }
   
   
-}  
+}
 
 int readSoil()
 {
     digitalWrite(soilPower, HIGH);//turn D7 "On"
-    delay(10);//wait 10 milliseconds 
-    int val = analogRead(soilPin);//Read the SIG value form sensor 
+    delay(10);//wait 10 milliseconds
+    int val = analogRead(soilPin);//Read the SIG value form sensor
     digitalWrite(soilPower, LOW);//turn D7 "Off"
     return val;//send current moisture value
 }
 
 int readSoil1()
 {
-  digitalWrite(soilPower1, HIGH); // turn d8 on 
+  digitalWrite(soilPower1, HIGH); // turn d8 on
   delay(10); //wait 10 milliseconds
   int val1 = analogRead(soilPin1); //Read the SIG value from sensor 2
   digitalWrite(soilPower1, LOW); // turn D8 off
-  return val1; //send current moisture value 
+  return val1; //send current moisture value
 }
 int readSoil2()
 {
-  digitalWrite(soilPower2, HIGH); // TURN D9 on 
-  delay(10); // wait 10 milliseconds 
+  digitalWrite(soilPower2, HIGH); // TURN D9 on
+  delay(10); // wait 10 milliseconds
   int val2 = analogRead(soilPin2); // read sig value from sensor 3
   digitalWrite(soilPower2, LOW); // turn D9 off
-  return val2; // send current moisture value 
+  return val2; // send current moisture value
 }
