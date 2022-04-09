@@ -37,6 +37,9 @@ boolean solenoidControlOpen2 = false; // solenoid2 is not open
 boolean returnControl = false; // microcontroller is currently in control of solenoids
 boolean closeAll = false; // closing all solenoids is currently false
 
+String Data;
+
+
 /*
 
   WiFi UDP Send and Receive String
@@ -289,28 +292,32 @@ void printWifiStatus() {
   Serial.println(" dBm");
 
 }
-/*
-void transmitData () {
-  Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
-  Udp.write(sensorValue);
-  Udp.write(sensorValue1);
-  Udp.write(sensorValue2);
-  Udp.endPacket();
-}
-*/
+
 int wateringPot (int sensorValue, int solenoidPin) { //what do i refer to high/low as?
-    
+  String x; 
+    if (solenoidPin == 11) {
+    x = "S1";
+  } 
+  else if (solenoidPin == 12){
+    x = "S2";
+  }
+  else {
+    x = "S3";
+  }
   if (sensorValue <= thresholdDown) {
     //water it
+    Data = x + "open";
     digitalWrite(solenoidPin, HIGH); //open solenoid
     delay(61000); //wait a minute and a second 
     sensorValue = readSoil();
     if (sensorValue <= thresholdDown) {
       delay(60000); //wait a minute
+      Data = x + "close";
       digitalWrite(solenoidPin, LOW); //close solenoid
       delay(1000);
     }
     else {
+      Data = x + "close";
       digitalWrite(solenoidPin, LOW); //close solenoid
       delay(1000);
     }
@@ -320,15 +327,18 @@ int wateringPot (int sensorValue, int solenoidPin) { //what do i refer to high/l
     delay(36000000); //wait an hour
     sensorValue = readSoil();
     if (sensorValue <= thresholdDown) {
+      Data = x + "open";
       digitalWrite(solenoidPin, HIGH); //open solenoid
       delay(61000); //wait a minute and a second 
       sensorValue = readSoil();
       if (sensorValue <= thresholdDown) {
         delay(60000); //wait a minute
+        Data = x + "close";
         digitalWrite(solenoidPin, LOW); //close solenoid
         delay(1000);
       }
       else {
+        Data = x + "close";
         digitalWrite(solenoidPin, LOW); //close solenoid
         delay(1000);
       }
@@ -338,20 +348,24 @@ int wateringPot (int sensorValue, int solenoidPin) { //what do i refer to high/l
     delay(18000000); //wait 30 min 
     sensorValue = readSoil();
     if (sensorValue <= thresholdDown) {
+      Data = x + "open";
       digitalWrite(solenoidPin, HIGH); //open solenoid
       delay(61000); //wait a minute and a second 
       sensorValue = readSoil();
       if (sensorValue <= thresholdDown) {
         delay(60000); //wait a minute
+        Data = x + "close";
         digitalWrite(solenoidPin, LOW); //close solenoid
         delay(1000);
       }
       else {
+        Data = x + "close";
         digitalWrite(solenoidPin, LOW); //close solenoid
         delay(1000);
       }
     }
   }
+  packData(Data);
 }
 
 void solenoids(bool solenoidControl, bool solenoidControlopenclose, int So) {
@@ -383,6 +397,8 @@ int readSoil()
     delay(10);//wait 10 milliseconds 
     int val = analogRead(soilPin);//Read the SIG value form sensor 
     digitalWrite(soilPower, LOW);//turn D7 "Off"
+    Data = "m1" +  String(val);
+    packData(Data);
     return val;//send current moisture value
 }
 
@@ -392,6 +408,8 @@ int readSoil1()
   delay(10); //wait 10 milliseconds
   int val1 = analogRead(soilPin1); //Read the SIG value from sensor 2
   digitalWrite(soilPower1, LOW); // turn D8 off
+  Data = "m2" +  String(val1);
+  packData(Data);
   return val1; //send current moisture value 
 }
 int readSoil2()
@@ -400,5 +418,17 @@ int readSoil2()
   delay(10); // wait 10 milliseconds 
   int val2 = analogRead(soilPin2); // read sig value from sensor 3
   digitalWrite(soilPower2, LOW); // turn D9 off
+  Data = "m3" +  String(val2);
+  packData(Data);
   return val2; // send current moisture value 
+}
+
+
+void packData (String water) {
+  char packet[20];
+  water += "update;";
+  water.toCharArray(packet, 20);
+  Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
+  Udp.write(packet);
+  Udp.endPacket();
 }
