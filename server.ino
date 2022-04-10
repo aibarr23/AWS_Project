@@ -399,9 +399,9 @@ void solenoids(bool solenoidControl, bool solenoidControlopenclose, int So) {
   int solenoids[] = {0, 10, 11, 12};
 
   if (solenoids[So] == 0) { //closing all solenoids, microcontrller is still not in control
-    digitalWrite(solenoidPin, HIGH);
-    digitalWrite(solenoidPin1, HIGH);
-    digitalWrite(solenoidPin2, HIGH);
+    digitalWrite(solenoidPin, LOW);
+    digitalWrite(solenoidPin1, LOW);
+    digitalWrite(solenoidPin2, LOW);
   }
   else{
     if (solenoidControl == true) { //user interacts with solenoid0 switch
