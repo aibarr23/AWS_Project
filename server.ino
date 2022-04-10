@@ -28,6 +28,8 @@ int soilPower = 7;
 int soilPower1 = 8;
 int soilPower2 = 9;
 
+unsigned long previousMillis = 0;
+
 boolean solenoidControl0 = false; // user is not controlling solenoid0
 boolean solenoidControl1 = false; // user is not controlling solenoid1
 boolean solenoidControl2 = false; // user is not controlling solenoid2
@@ -179,15 +181,8 @@ void loop() {
     solenoidControl2 = false; // user is not controlling solenoid2
   }
   
-  if (solenoidControl0 == false) {
-    wateringPot(sensorValue, solenoidPin);
-  }
-  if (solenoidControl1 == false) {
-    wateringPot(sensorValue1, solenoidPin1);
-  }
-  if (solenoidControl2 == false) {
-    wateringPot(sensorValue2, solenoidPin2);
-  }
+  
+
   // if there's data available, read a packet
   int packetSize = Udp.parsePacket();
 
@@ -272,6 +267,37 @@ void loop() {
     }
     memset(packetBuffer, 0, 255); // clear out packetBuffer array
   }
+
+
+  unsigned long currentMillis = millis();
+  if(sensorValue <= thresholdDown){//no timer
+    if (solenoidControl0 == false) {
+      
+      wateringPot(sensorValue, solenoidPin);
+      previousMillis = currentMillis;
+    }
+  }
+  if(sensorValue >= thresholdDown){//wait for an hour
+    if (solenoidControl1 == false) {
+      if(currentMillis - previousMillis >= 3600000){
+        
+        wateringPot(sensorValue1, solenoidPin1);
+        previousMillis = currentMillis;
+      }
+      
+    }
+  }
+  if(sensorValue == thresholdDown){// wait 30 minutes
+    if (solenoidControl2 == false) {
+      if(currentMillis - previousMillis >= 1800000){
+        
+        wateringPot(sensorValue2, solenoidPin2);
+        previousMillis = currentMillis;
+      }
+    }
+  }
+
+
 }
 
 void printWifiStatus() {
@@ -324,7 +350,7 @@ int wateringPot (int sensorValue, int solenoidPin) { //what do i refer to high/l
   }
   else if (sensorValue >= thresholdUp) {
     //wait and check later
-    delay(36000000); //wait an hour
+    // delay(36000000); //wait an hour
     sensorValue = readSoil();
     if (sensorValue <= thresholdDown) {
       Data = x + "open";
@@ -345,7 +371,7 @@ int wateringPot (int sensorValue, int solenoidPin) { //what do i refer to high/l
     }
   }
   else {
-    delay(18000000); //wait 30 min
+    // delay(18000000); //wait 30 min
     sensorValue = readSoil();
     if (sensorValue <= thresholdDown) {
       Data = x + "open";
