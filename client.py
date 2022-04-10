@@ -1,6 +1,8 @@
 import socket
 import time
 from datetime import datetime
+import importlib
+from inspect import isfunction
 
 address = ('10.0.0.56', 2390) #define server IP and port
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #set op the socket
@@ -79,24 +81,30 @@ def CLASo(so, action):
 
 
 # this loop will check for possible recieved packets
-def store_Data(self):
+def Update_Data(self):
     
-    data = "SData"
     
     # client_socket.sendto(data.encode(), address)
     try:
         R_data, addr = client_socket.recvfrom(1024) # read response
         time_recv = datetime.now()
         
+        st = R_data.decode()
         # test store data function
-        print(R_data.decode())
+        print(st)
         print(time_recv)
+        
+        call_func('main.p', 'Update_UI', st)
+            
         
         # get data and store it in text file for future analysis
         S_data(R_data)
         
     except:
+        # print("Failed to obtain data")
         pass
+        
+        
     
 
 # this is the function that will store the data into a file
@@ -119,3 +127,12 @@ def S_data(R_data):
         text_file = open("data.txt", "a")
         text_file.write(data)
         text_file.close()
+
+
+def call_func(module_name, func_name, *args):
+    module = importlib.import_module(module_name)
+    
+    for attname in dir(module):
+        att = getattr(module, attname)
+        if isfunction(att) and attname == func_name:
+            att(*args)

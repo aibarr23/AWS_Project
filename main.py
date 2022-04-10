@@ -24,7 +24,7 @@ from helper import KV
 # from Weather_data_collection import formattedktof, formattedktof_feelslike, formattedmbtoinhg, formattedkmhr, x, clouds
 # from Weather_data_collection import humidity, z
 from Weather_data_collection import get_weather
-from client import SendW_toCtr, store_Data, S_data, Return_control, CLASo
+from client import SendW_toCtr, Update_Data, S_data, Return_control, CLASo
 
 from datetime import datetime
 
@@ -163,7 +163,7 @@ class AWSApp(MDApp):
 
         # the following will runt the function once and run it again after given interval
         event = Clock.schedule_once(refresh_weather, 1)
-        x = Clock.schedule_interval(event, 10)# the second input is for seconds
+        x = Clock.schedule_interval(event, 50*60)# the second input is for seconds
         event()
         
         if( args[0] == 's'):
@@ -240,8 +240,46 @@ class AWSApp(MDApp):
                     self.root.ids.S3.active = False
         
         
+    
+    def Update_UI(self, *args):
         
-
+        data_U = args[0]
+        data_U = data_U.split(";")
+        
+        if data_U[0] == "update":
+            
+            # update data in UI
+            if data_U[1][0] == "S":
+                
+                #update solenoid 1
+                if data_U[1][1] == "1":
+                    if data_U[1].subtring(2) == "open":
+                        self.root.ids.S1.active = True
+                    else:
+                        self.root.ids.S1.active = False
+                        
+                #update solenoid 2
+                if data_U[1][1] == "2":
+                    if data_U[1].subtring(2) == "open":
+                        self.root.ids.S2.active = True
+                    else:
+                        self.root.ids.S2.active = False
+                        
+                #update solenoid 3
+                if data_U[1][1] == "3":
+                    if data_U[1].subtring(2) == "open":
+                        self.root.ids.S3.active = True
+                    else:
+                        self.root.ids.S3.active = False
+                        
+                        
+            elif data_U[1][0] == "m":
+                if data_U[1][1] == "1":
+                    self.root.ids.M1.text = "Current Soil Moisture of Plant #1: " + data_U[1].substring(2)
+                elif data_U[1][1] == "2":
+                    self.root.ids.M2.text = "Current Soil Moisture of Plant #2: " + data_U[1].substring(2)
+                else:
+                    self.root.ids.M3.text = "Current Soil Moisture of Plant #3: " + data_U[1].substring(2)
 
     # bellow this there will be variables used as functions inside the KV string that will
     # be used to build the apps main body
@@ -256,9 +294,13 @@ class AWSApp(MDApp):
     getDT = Get_Date_Time()
     T = formattedktof
     CTemp = "\n" + T + "°" + "  F" + "\n"
+    
+    moS1 = "Current Soil Moisture of Plant #1: "
+    moS2 = "Current Soil Moisture of Plant #2: "
+    moS3 = "Current Soil Moisture of Plant #3: "
     # End of variables used for functions
     #-----------------------------------
-    Clock.schedule_interval(store_Data, 60)
+    Clock.schedule_interval(Update_Data, 10)
     
     # this should check for incoming packets from the arduino server
     # regarding update for the UI

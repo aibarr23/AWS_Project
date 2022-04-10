@@ -317,9 +317,10 @@ MDBoxLayout:
                                 radius: 40
 
                                 MDLabel:
+                                    id: M1
                                     halign: "center"
                                     font_style: "H5"
-                                    text: "Current Soil Moisture of Plant #1: "
+                                    text: app.moS1
 
                                 MDLabel:
                                     halign: "center"
@@ -329,9 +330,10 @@ MDBoxLayout:
                                 MDSeparator:
 
                                 MDLabel:
+                                    id: M2
                                     halign: "center"
                                     font_style: "H5"
-                                    text: "Current Soil Moisture of Plant #2: "
+                                    text: app.moS2
 
                                 MDLabel:
                                     halign: "center"
@@ -341,9 +343,10 @@ MDBoxLayout:
                                 MDSeparator:
 
                                 MDLabel:
+                                    id: M3
                                     halign: "center"
                                     font_style: "H5"
-                                    text: "Current Soil Moisture of Plant #3: "
+                                    text: app.moS3
 
                                 MDLabel:
                                     halign: "center"

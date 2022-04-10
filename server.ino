@@ -5,13 +5,13 @@
 Uart mySerial (&sercom0, 13, 8, SERCOM_RX_PAD_1, UART_TX_PAD_0);
 
 
-// Here we are setting up some water thersholds that we will 
+// Here we are setting up some water thersholds that we will
 // use later. Note that you will need to change these to match
-// your soil type and environment. 
+// your soil type and environment.
 
 /********************************************************
- * Change these values based on your calibration values
- *******************************************************/
+* Change these values based on your calibration values
+*******************************************************/
 int thresholdUp = 400;
 int thresholdDown = 250;
 
@@ -26,7 +26,7 @@ int soilPin1 = A1;
 int soilPin2 = A2;
 int soilPower = 7;
 int soilPower1 = 8;
-int soilPower2 = 9;  
+int soilPower2 = 9;
 
 boolean solenoidControl0 = false; // user is not controlling solenoid0
 boolean solenoidControl1 = false; // user is not controlling solenoid1
@@ -42,18 +42,18 @@ String Data;
 
 /*
 
-  WiFi UDP Send and Receive String
+WiFi UDP Send and Receive String
 
- This sketch wait an UDP packet on localPort using the WiFi module.
+This sketch wait an UDP packet on localPort using the WiFi module.
 
- When a packet is received an Acknowledge packet is sent to the client on port remotePort
+When a packet is received an Acknowledge packet is sent to the client on port remotePort
 
- created 30 December 2012
+created 30 December 2012
 
- by dlf (Metodo2 srl)
+by dlf (Metodo2 srl)
 
 # Note following code was repurposed for a project use
- */
+*/
 
 #include <SPI.h>
 #include <WiFiNINA.h>
@@ -175,7 +175,7 @@ void loop() {
   
   if (returnControl == true) { //user returns control to solenoids
     solenoidControl0 = false; // user is not controlling solenoid0
-    solenoidControl1 = false; // user is not controlling solenoid1   
+    solenoidControl1 = false; // user is not controlling solenoid1
     solenoidControl2 = false; // user is not controlling solenoid2
   }
   
@@ -227,7 +227,7 @@ void loop() {
       // collect moisture levels
 
       // test
-       // send a reply, to the IP address and port that sent us the packet we received
+      // send a reply, to the IP address and port that sent us the packet we received
       Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
       //ReplyBuffer = "store this data?";
       Udp.write(ReplyBuffer);
@@ -294,10 +294,10 @@ void printWifiStatus() {
 }
 
 int wateringPot (int sensorValue, int solenoidPin) { //what do i refer to high/low as?
-  String x; 
+  String x;
     if (solenoidPin == 11) {
     x = "S1";
-  } 
+  }
   else if (solenoidPin == 12){
     x = "S2";
   }
@@ -308,7 +308,7 @@ int wateringPot (int sensorValue, int solenoidPin) { //what do i refer to high/l
     //water it
     Data = x + "open";
     digitalWrite(solenoidPin, HIGH); //open solenoid
-    delay(61000); //wait a minute and a second 
+    delay(61000); //wait a minute and a second
     sensorValue = readSoil();
     if (sensorValue <= thresholdDown) {
       delay(60000); //wait a minute
@@ -323,13 +323,13 @@ int wateringPot (int sensorValue, int solenoidPin) { //what do i refer to high/l
     }
   }
   else if (sensorValue >= thresholdUp) {
-    //wait and check later 
+    //wait and check later
     delay(36000000); //wait an hour
     sensorValue = readSoil();
     if (sensorValue <= thresholdDown) {
       Data = x + "open";
       digitalWrite(solenoidPin, HIGH); //open solenoid
-      delay(61000); //wait a minute and a second 
+      delay(61000); //wait a minute and a second
       sensorValue = readSoil();
       if (sensorValue <= thresholdDown) {
         delay(60000); //wait a minute
@@ -345,12 +345,12 @@ int wateringPot (int sensorValue, int solenoidPin) { //what do i refer to high/l
     }
   }
   else {
-    delay(18000000); //wait 30 min 
+    delay(18000000); //wait 30 min
     sensorValue = readSoil();
     if (sensorValue <= thresholdDown) {
       Data = x + "open";
       digitalWrite(solenoidPin, HIGH); //open solenoid
-      delay(61000); //wait a minute and a second 
+      delay(61000); //wait a minute and a second
       sensorValue = readSoil();
       if (sensorValue <= thresholdDown) {
         delay(60000); //wait a minute
@@ -389,13 +389,13 @@ void solenoids(bool solenoidControl, bool solenoidControlopenclose, int So) {
   }
   
   
-}  
+}
 
 int readSoil()
 {
     digitalWrite(soilPower, HIGH);//turn D7 "On"
-    delay(10);//wait 10 milliseconds 
-    int val = analogRead(soilPin);//Read the SIG value form sensor 
+    delay(10);//wait 10 milliseconds
+    int val = analogRead(soilPin);//Read the SIG value form sensor
     digitalWrite(soilPower, LOW);//turn D7 "Off"
     Data = "m1" +  String(val);
     packData(Data);
@@ -404,29 +404,29 @@ int readSoil()
 
 int readSoil1()
 {
-  digitalWrite(soilPower1, HIGH); // turn d8 on 
+  digitalWrite(soilPower1, HIGH); // turn d8 on
   delay(10); //wait 10 milliseconds
   int val1 = analogRead(soilPin1); //Read the SIG value from sensor 2
   digitalWrite(soilPower1, LOW); // turn D8 off
   Data = "m2" +  String(val1);
   packData(Data);
-  return val1; //send current moisture value 
+  return val1; //send current moisture value
 }
 int readSoil2()
 {
-  digitalWrite(soilPower2, HIGH); // TURN D9 on 
-  delay(10); // wait 10 milliseconds 
+  digitalWrite(soilPower2, HIGH); // TURN D9 on
+  delay(10); // wait 10 milliseconds
   int val2 = analogRead(soilPin2); // read sig value from sensor 3
   digitalWrite(soilPower2, LOW); // turn D9 off
   Data = "m3" +  String(val2);
   packData(Data);
-  return val2; // send current moisture value 
+  return val2; // send current moisture value
 }
 
 
 void packData (String water) {
   char packet[20];
-  water += "update;";
+  water = "update;" + water;
   water.toCharArray(packet, 20);
   Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
   Udp.write(packet);
