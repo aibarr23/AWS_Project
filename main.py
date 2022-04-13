@@ -71,7 +71,7 @@ def Return_control():
 # action: c: close; o: open
 def CLASo(so, action):
     
-    data = "CalSo;"# refers to clos all solenoids
+    data = "CalSo;"+so+";"+action# refers to clos all solenoids
     
     while(1):
         client_socket.sendto(data.encode(), address)
@@ -223,8 +223,6 @@ class AWSApp(MDApp):
                 self.root.ids.S1.disabled = False
                 self.root.ids.S2.disabled = False
                 self.root.ids.S3.disabled = False
-                # have controller take control of solenoids
-                # here
         Clock.schedule_once(Return_con,1)
 
 

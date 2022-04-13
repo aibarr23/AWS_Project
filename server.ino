@@ -230,6 +230,54 @@ void loop() {
 
     }
 
+    // this will return the control to the Controller
+    if(DataT == "Rcntr"){
+
+      returnControl = false;
+      char packet[20] = "control was returned";
+      Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
+      Udp.write(packet);
+      Udp.endPacket();
+    }
+
+
+    // this will close solenoids and take control respectively
+    if(DataT == "CalSo"){
+      //find first data value (So)
+      int p2 = Data.indexOf(";", p);
+      p += 1;
+      int s = p2 - p; // gives size of value
+      String So = Data.substring(p, s);
+
+      //find final data value(action)
+      p = p2;
+      p2 = Data.length();
+      p += 1;
+      s = p2 - p;
+      String action = Data.substring(p, s);
+      
+      boolean a;
+      if(action == "o"){
+        a = true;
+      }
+      else{
+        a = false;
+      }
+
+      if(So == "0"){
+        solenoids(true, a, 0);
+      }
+      else if(So == "1"){
+        solenoids(true, a, 1);
+      }
+      else if(So == "2"){
+        solenoids(true, a, 2);
+      }
+      else if(So == "3"){
+        solenoids(true, a, 3);
+      }
+
+    }
     // Update microcontroller of weather data.
     if(DataT == "WData") {
 
