@@ -90,31 +90,7 @@ def CLASo(so, action):
 
 
 
-# this loop will check for possible recieved packets
-def Update_Data(self):
-    
-    
-    # client_socket.sendto(data.encode(), address)
-    try:
-        R_data, addr = client_socket.recvfrom(1024) # read response
-        time_recv = datetime.now()
-        
-        st = R_data.decode()
-        # test store data function
-        print(st)
-        print(time_recv)
-        
-        call_func('main.p', 'Update_UI', st)
-        Update_UI(st)
-            
-        
-        # get data and store it in text file for future analysis
-        S_data(R_data)
-        
-    except:
-        # print("Failed to obtain data")
-        pass
-        
+
         
     
 
@@ -372,9 +348,9 @@ class AWSApp(MDApp):
         
         
     
-    def Update_UI(self, *args):
+    def Update_UI(self, st):
         
-        data_U = args[0]
+        data_U = st
         data_U = data_U.split(";")
         
         if data_U[0] == "update":
@@ -411,7 +387,29 @@ class AWSApp(MDApp):
                     self.root.ids.M2.text = "Current Soil Moisture of Plant #2: " + data_U[1].substring(2)
                 else:
                     self.root.ids.M3.text = "Current Soil Moisture of Plant #3: " + data_U[1].substring(2)
-
+    # this loop will check for possible recieved packets
+    def Update_Data(self):
+        
+        
+        # client_socket.sendto(data.encode(), address)
+        try:
+            R_data, addr = client_socket.recvfrom(1024) # read response
+            time_recv = datetime.now()
+            
+            st = R_data.decode()
+            # test store data function
+            print(st)
+            print(time_recv)
+            
+            self.Update_UI(st)
+            
+            # get data and store it in text file for future analysis
+            S_data(R_data)
+            
+        except:
+            # print("Failed to obtain data")
+            pass
+        
     # bellow this there will be variables used as functions inside the KV string that will
     # be used to build the apps main body
     #--------------------------------------
